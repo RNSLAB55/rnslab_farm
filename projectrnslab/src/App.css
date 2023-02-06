@@ -1,0 +1,403 @@
+
+.login {
+  padding: 5% 5%;
+}
+.login .title {
+  color: #22AF4F;
+  font-family: 'Noto Sans KR Bold';
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 120px;
+  font-size: 30px;
+}
+.login .account {
+  width: 100%;
+}
+.login .account input{
+  width: 94%;
+  padding-left: 4%;
+  margin-bottom: 10px;
+  height: 50px;
+  border-radius: 7px;
+  border: 0.9px solid
+}
+.login .account input:focus{
+  width: 94%;
+  padding-left: 4%;
+  margin-bottom: 10px;
+  height: 50px;
+  border-radius: 7px;
+  outline: 0.1px solid;
+}
+.login button{
+  border: none;
+  margin-top: 20px;
+  width: 100%;
+  height: 50px;
+  border-radius: 7px;
+  background-color: #22AF4F;
+  color: white;
+  font-size: 18px;
+}
+
+.login .version {
+  margin-top: 50px;
+  text-align: center;
+  color:#787878;
+  font-family: 'Noto Sans KR Bold';
+}
+/*타입*/
+.type {
+  padding:5% 5%
+}
+
+.type .header {
+  text-align: center;
+  font-size: 30px;
+}
+
+.type .body {
+  margin-top: 40px;
+}
+.type .body .top{
+  margin-right: 5%;
+  text-align: right;
+}
+.type .body .center {
+  margin-top: 20px;
+}
+
+.type .body .center .item {
+  display: flex;
+  padding: 2% 2% 2% 2%;
+  margin: 1.5% 4% 1.5%;
+  background-color: white;
+  height: 160px;
+  border-radius: 4px;
+  border: 0.9px solid;
+}
+#outOfRange {
+  border:2px solid #EBC271;
+}
+#noValue {
+  border:2px solid red;
+}
+.type .body .center .item .info {
+  flex-grow: 1;
+}
+.type .body .center .item .info .title{
+  color:#787878;
+  font-size: 10px;
+}
+.type .body .center .item .status {
+  flex-grow: 1;
+  text-align: right;
+}
+.type .body .center .item .status .title {
+  color:#787878;
+  font-size: 10px;
+}
+
+.type .body .center .item button {
+  margin-top: 30px;
+  border: none;
+  width: 100px;
+  height: 40px;
+  background: #22AF4F;
+  color: white;
+  font-family: 'Noto Sans KR Bold';
+  border-radius: 4px;
+}
+.main .setting {
+  font-size: 12px;
+}
+.main .setting .body{
+  margin-top: 10px;
+}
+.main .body .setting .body .item {
+  font-size: 14px;
+  display: flex;
+  padding: 1% 1% 1% 2%;
+  margin: 1.5% 4% 1.5%;
+  background-color: white;
+  height: 75px;
+  border-radius: 7px;
+}
+
+.main .body .setting .body .item img {
+  width: 40px;
+  height: 40px;
+}
+.main .body .setting .item .imgArea {
+  padding-top: 1%;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main .body .setting .item .infoArea {
+  display: flex;
+  font-family: 'Noto Sans KR Bold';
+  width: 42%;
+  padding-left: 5%;
+  padding-right: 5%;
+  align-items: center;
+}
+.main .body .setting .item .valueArea {
+  padding-top: 20px;
+  font-family: 'Noto Sans KR Bold';
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.main .body .setting .item input {
+  font-family: 'Noto Sans KR Bold';
+  width: 60px;
+  display: flex;
+  align-items: center;
+  margin-left: 4px;
+  text-align: center;
+}
+
+.setting .footer {
+  padding-left: 4%;
+  padding-right: 4%;
+}
+.setting button{
+  border: none;
+  margin-top: 10px;
+  width: 100%;
+  height: 50px;
+  border-radius: 7px;
+  background-color: #22AF4F;
+  color: white;
+  font-size: 18px;
+}
+
+
+
+/*메인*/
+.main {
+  font-family: 'Noto Sans KR Medium';
+  font-size: 40px;
+  
+}
+.main .header {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 25px;
+}
+.main .header .top {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.main .header .top img{
+  height: 30px;
+  width: 30px;
+}
+.main .header .top .backButton {
+  flex-grow: 1;
+  padding-top: 10px;
+  text-align: left;
+  margin-left: 2%;
+  border: none;
+}
+.main .header .top .backButton button {
+  border: none;
+  background-color: #FCFCFC;
+}
+.main .header .top .title {
+  margin-top: -3px;
+  text-align: center;
+  flex-grow: 1;
+}
+.main .header .top .temp {
+  flex-grow: 1;
+}
+.main .header .menu {
+  display: flex;
+}
+.main .header .menu .item {
+  flex-grow: 1;
+}
+.main .header .menu .itemClicked {
+  flex-grow: 1;
+  border-bottom: #22AF4F 2px solid;
+}
+.main .header .menu .item button {
+  height: 40px;
+  font-size: 1rem;
+  background: #FCFCFC;
+  border: none;
+  color: #787878;
+}
+.main .header .menu .itemClicked button {
+  height: 40px;
+  font-size: 1rem;
+  background: #FCFCFC;
+  border:none;
+  color: #22AF4F;
+  font-family: 'Noto Sans KR Bold';
+}
+
+.main .body .everySensor {
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+}
+.main .body .everySensor .updateTime {
+  font-size: 8px;
+  text-align: right;
+  margin-right: 7%;
+}
+.main .body .everySensor .item {
+  font-size: 14px;
+  display: flex;
+  padding: 1% 1% 1% 2%;
+  margin: 1.5% 4% 1.5%;
+  background-color: white;
+  height: 75px;
+  border-radius: 7px;
+}
+
+.main .body .everySensor .item img {
+  width: 48px;
+  height: 48px;
+}
+
+.main .body .everySensor .item .imgArea {
+  padding-top: 1%;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main .body .everySensor .item .infoArea {
+  font-family: 'Noto Sans KR Bold';
+  padding-top: 3.5%;
+  width: 42%;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+.main .body .everySensor .item .valueArea {
+  font-family: 'Noto Sans KR Bold';
+  display: flex;
+  align-items: center;
+}
+.eachSensor {
+  font-family: 'Noto Sans KR Medium';
+  padding:5.5% 2% 
+}
+
+.eachSensor .header{
+  font-family: 'Noto Sans KR Medium';
+  font-size: 25px;
+  display: flex;
+}
+
+.eachSensor .header img{
+  height: 30px;
+  width: 30px;
+}
+.eachSensor .header button{
+background: none;
+border: none;
+}
+
+.eachSensor .header .backButton {
+  flex-grow: 1;
+  margin-right: 4%;
+}
+.eachSensor .header .title {
+  margin-top: -3px;
+  flex-grow: 1;
+}
+.eachSensor .header .temp {
+  flex-grow: 1;
+}
+
+.eachSensor .body {
+  font-size: 14px;
+  padding: 2% 2%
+}
+.eachSensor .body .date {
+  padding: 2% 2%;
+  display: flex;
+  background-color: white;
+  justify-content: space-between;
+}
+.eachSensor .body .date .dt{
+  flex-grow: 1;
+}
+.eachSensor .body .date .dt .title{
+  font-family: 'Noto Sans KR Bold';
+}
+.eachSensor .body .date .dt .tt{
+  font-family: 'Noto Sans KR Light';
+  padding-top: 10px;
+  font-size: 26px;
+  color:#787878
+}
+.eachSensor .body .date .time{
+  text-align: right;
+  flex-grow: 1;
+}
+.eachSensor .body .date .time .title{
+  font-family: 'Noto Sans KR Bold';
+}
+.eachSensor .body .date .time .tt{
+  font-family: 'Noto Sans KR Light';
+  padding-top: 10px;
+  font-size: 26px;
+  color:#787878
+}
+.eachSensor .body .chart {
+  font-family: 'Noto Sans KR Bold';
+  padding: 2% 2%;
+  margin-top: 10px;
+  background-color: white;
+}
+.eachSensor .body .chart .titleArea {
+  display: flex;
+  justify-content: space-between;
+}
+.eachSensor .body .chart .chartArea {
+  width: 100%;
+  height: 200px;
+}
+.eachSensor .body .chart input[type="checkbox"]{
+  background-color: #22AF4F !important;
+  border: none;
+}
+.eachSensor .body .average {
+  margin-top: 10px;
+  background: white;
+  font-family: 'Noto Sans KR Bold';
+  padding: 5% 3%;
+}
+.eachSensor .body .average .value{
+  font-size: 18px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.eachSensor .body .minmax {
+  margin-top: 10px;
+  background: white;
+  font-family: 'Noto Sans KR Bold';
+  padding: 5% 3%;
+}
+.eachSensor .body .minmax .value{
+  font-size: 18px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.eachSensor .body .minmax .value .range{
+  font-size: 12px;
+}
