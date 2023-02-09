@@ -12,7 +12,7 @@ const Type = () => {
     console.log(id, nodes);
 
     useEffect(() => {
-        !localStorage.getItem("rnage") && localStorage.setItem("rnage",
+        !localStorage.getItem("range") && localStorage.setItem("range",
             JSON.stringify({
                 minT: 0,
                 maxT: 0,

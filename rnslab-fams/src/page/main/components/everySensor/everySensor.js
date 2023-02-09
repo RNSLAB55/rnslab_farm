@@ -24,7 +24,7 @@ const EverySensor = (node) => {
 
   const Sensor = (props) => {
     const { title, img, value, item } = props;
-    console.log(range, item, range[`min${item}`]);
+    console.log(range, item);
     const isSetting = () => {
       return (
         (Number(range[`min${item}`]) === 0 &&
