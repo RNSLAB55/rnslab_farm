@@ -67,63 +67,74 @@ const Setting = (props, node) => {
   };
   const handleSubmint = (event) => {
     event.preventDefault();
-    console.log(event.target.length);
+    console.log(event);
     localStorage.setItem(
-        "range",
-        JSON.stringify({
-          minT: event.target[0].value,
-          maxT: event.target[1].value,
-          minH: event.target[2].value,
-          maxH: event.target[3].value,
-          minCO: event.target[4].value,
-          maxCO: event.target[5].value,
-          minMETHAN: event.target[6].value,
-          maxMETHAN: event.target[7].value,
-          minH2S: event.target[8].value,
-          maxH2S: event.target[9].value,
-          minNOx: event.target[10].value,
-          maxNOx: event.target[11].value,
-          minCO2: event.target[12].value,
-          maxCO2: event.target[13].value,
-          minB: event.target[14].value,
-          maxB: event.target[15].value,
-          minEC: event.target[16].value,
-          maxEC: event.target[17].value,
-          minSH: event.target[18].value,
-          maxSH: event.target[19].value,
-          minST: event.target[20].value,
-          maxST: event.target[21].value,
-        })
-      );
-      Toast.show({
-        content: "저장되었습니다",
-        position: "bottom",
-      });
-      changeMenu(1);
-    };
-    return (
-      <form onSubmit={handleSubmint}>
-        <div className="setting">
-          <div className="body">
-            <Sensor item="T" img={TEMPImg} title="온도"></Sensor>
-            <Sensor item="H" img={HUMImg} title="습도"></Sensor>
-            <Sensor item="CO" img={coImg} title="일산화탄소"></Sensor>
-            <Sensor item="METHAN" img={METHANEImg} title="메탄가스"></Sensor>
-            <Sensor item="H2S" img={H2SImg} title="황화수소가스"></Sensor>
-            <Sensor item="NOx" img={NOxImg} title="질소화합물가스"></Sensor>
-            <Sensor item="CO2" img={coImg} title="이산화탄소"></Sensor>
-            <Sensor item="B" img={coImg} title="배터리"></Sensor>
-            <Sensor item="EC" img={coImg} title="전기 전도도"></Sensor>
-            <Sensor item="SH" img={coImg} title="SH"></Sensor>
-            <Sensor item="ST" img={coImg} title="ST"></Sensor>
-          </div>
-          <div className="footer">
-            <button type="submit">저장하기</button>
-          </div>
-        </div>
-      </form>
+      "range",
+      JSON.stringify({
+        minT: event.target[0].value,
+        maxT: event.target[1].value,
+        minH: event.target[2].value,
+        maxH: event.target[3].value,
+        minCO: event.target[4].value,
+        maxCO: event.target[5].value,
+        minMETHAN: event.target[6].value,
+        maxMETHAN: event.target[7].value,
+        minH2S: event.target[8].value,
+        maxH2S: event.target[9].value,
+        minNOx: event.target[10].value,
+        maxNOx: event.target[11].value,
+        minCO2: event.target[12].value,
+        maxCO2: event.target[13].value,
+        minB: event.target[14].value,
+        maxB: event.target[15].value,
+        minEC: event.target[16].value,
+        maxEC: event.target[17].value,
+        minSH: event.target[18].value,
+        maxSH: event.target[19].value,
+        minST: event.target[20].value,
+        maxST: event.target[21].value,
+      })
     );
+    Toast.show({
+      content: "저장되었습니다",
+      position: "bottom",
+    });
+    changeMenu(1);
   };
-  
-  export default Setting;
-  
+  return (
+    <form onSubmit={handleSubmint}>
+      <div className="setting">
+        <div className="body">
+            {node_type == "321" ? (
+                <>
+                    <Sensor item="T" img={TEMPImg} title="온도"></Sensor>
+                    <Sensor item="H" img={HUMImg} title="습도"></Sensor>
+                    <Sensor item="CO2" img={coImg} title="이산화탄소"></Sensor>
+                    <Sensor item="EC" img={coImg} title="전기 전도도"></Sensor>
+                    <Sensor item="SH" img={coImg} title="SH"></Sensor>
+                    <Sensor item="ST" img={coImg} title="ST"></Sensor>
+                </>
+            ) : node_type == "322" ? (
+                <>
+                    <Sensor item="T" img={TEMPImg} title="온도"></Sensor>
+                    <Sensor item="H" img={HUMImg} title="습도"></Sensor>
+                    <Sensor item="B" img={coImg} title="배터리"></Sensor>
+                </>
+            ) : (
+                <>
+                    <Sensor item="CO" img={coImg} title="일산화탄소"></Sensor>
+                    <Sensor item="METHAN" img={METHANEImg} title="메탄가스"></Sensor>
+                    <Sensor item="H2S" img={H2SImg} title="황화수소가스"></Sensor>
+                    <Sensor item="NOx" img={NOxImg} title="질소화합물가스"></Sensor>
+                </>
+            )};
+        </div>
+        <div className="footer">
+          <button type="submit">저장하기</button>
+        </div>
+      </div>
+    </form>
+  );
+};
+
+export default Setting;
