@@ -203,6 +203,32 @@
 
 
 
+.main .body .inputNodeTypebox {
+  margin-top: 15px;
+  display: flex;
+  margin: 1.5% 4% 1.5%;
+  background-color: white;
+  height: 38px;
+  border-radius: 4px;
+}
+
+.main .body .inputNodeTypebox .inputText {
+  width: 80%;
+  padding: 1.5%;
+  margin-right: 1%;
+  border-radius: 4px;
+  border: 0.5px solid;
+}
+
+.main .body .inputNodeTypebox .addNode {
+  width: 18%;
+  background: #22AF4F;
+  color: white;
+  font-family: 'Noto Sans KR Bold';
+  border: 0px;
+  border-radius: 4px;
+}
+
 /*메인*/
 .main {
   font-family: 'Noto Sans KR Medium';

@@ -62,11 +62,11 @@ const Type = () => {
                         <div className="center">
                             {nodes && nodes.map((node) => (
                                 userNodes && userNodes.map((userNode) => (
-                                    userNode.node_Id == node.node_id ? (
+                                    userNode.node_Id === node.node_id && userNode.id === id ? (
                                         <div className="item" key={node.node_id}>
                                         <div className="info">
                                             <div className="title">프로필 명</div>
-                                            <div>{node.node_id}</div>
+                                            <div>{userNode.node_Type === null ? node.node_id : userNode.node_Type}</div>
                                             <div className="title">type</div>
                                             <div>{node.node_type.split('"')[3]}</div>
                                             <div className="title">생성일</div>
@@ -82,7 +82,7 @@ const Type = () => {
                                             </div>
                                             <div className="title">최근갱신</div>
                                             <div style={{fontSize:"12px"}}>{moment(node.last_timestamp).format("YYYY-MM-DD hh:mm:ss")}</div>
-                                            <button onClick={() => {navigate("/main", {state : {node,id}})}}>선택</button>
+                                            <button onClick={() => {navigate("/main", {state : {node,userNode,id}})}}>선택</button>
                                         </div>
                                     </div>
                                     ) : null

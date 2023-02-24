@@ -4,6 +4,7 @@ const post = 3003;
 const cors = require('cors');
 const bodyParser = require("body-parser");
 const mysql = require("mysql");
+const { response } = require('express');
 
 let connection = mysql.createConnection({
     host : "localhost",
@@ -47,6 +48,20 @@ app.post('/getusernodes', (req,res) => {
     });
 });
 
+app.post('/getusernode', (req,res) => {
+    const id = req.body.id;
+    const nodeId = req.body.nodeId;
+    connection.query("SELECT * FROM nodes WHERE node_Id = ? AND id = ?",[nodeId,id],
+    function(err, rows){
+        if(err){
+            console.log(err);
+        }else{
+            res.send(rows);
+            console.log(rows);
+        }
+    })
+})
+
 app.post('/inputdata', (req, res) => {
     const id = req.body.id;
     const nodeId = req.body.nodeId;
@@ -58,6 +73,36 @@ app.post('/inputdata', (req, res) => {
             res.send(rows);
         }
     });
+})
+
+app.post('/updatesettingdata', (req, res) => {
+    const uppercase = req.body.uppercase;
+    const value = req.body.value;
+    const id = req.body.id;
+    const nodeId = req.body.nodeId;
+    connection.query(`UPDATE nodes SET ${uppercase}=? WHERE node_Id=? and id=?;`,[value, nodeId, id],
+    function(err, rows) {
+        if(err) {
+            console.log(err);
+        }else{
+            res.send(rows);
+            console.log(rows);
+        }
+    })
+})
+
+app.post('/updatesettingnodetype', (req,res) => {
+    const nodeType = req.body.nodeType;
+    const nodeId = req.body.nodeId;
+    connection.query('UPDATE nodes SET node_Type=? where node_Id=?;',[nodeType,nodeId],
+    function(err, rows) {
+        if(err){
+            console.log(err);
+        }else{
+            res.send(rows);
+            console.log(rows);
+        }
+    })
 })
 
 app.listen(post, () => {

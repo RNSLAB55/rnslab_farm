@@ -10,7 +10,8 @@ import leftIcon from "../../assets/img/left.png";
 const Main = () => {
     const id = useLocation().state.id;
     const node = useLocation().state.node;
-    console.log(id, node);
+    const userNode = useLocation().state.userNode;
+    console.log(id, node, userNode);
     const [menu, setMenu] = useState(1);
     const changeMenu = (menuNo) => {
         setMenu(menuNo);
@@ -47,7 +48,7 @@ const Main = () => {
                         spinLoading()
                     ):(
                         <>
-                            <div className="title">{node.node_id}</div>
+                            <div className="title">{userNode.node_Type === null ? node.node_id : userNode.node_Type}</div>
                             <div className="temp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                         </>    
                     )}
@@ -74,7 +75,7 @@ const Main = () => {
                     {menu === 1 ? (
                         <EverySensor init={{node,id}}></EverySensor>
                     ): menu === 4 ? (
-                        <Setting changeMenu={changeMenu} init={node.state}></Setting>
+                        <Setting changeMenu={changeMenu} init={{node,id}}></Setting>
                     ) : null}
                 </div>
             )}
