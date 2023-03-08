@@ -1,6 +1,7 @@
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 const EverySensor = (props) => {
     const navigate = useNavigate();
     const {node,id,sensorWithRangeLoading,rangeData,last_timestamp} = props.init;
@@ -148,10 +149,15 @@ const EverySensor = (props) => {
         </>
     )
 =======
+=======
+>>>>>>> parent of 6e55476c (prefect)
 const EverySensor = (node) => {
     const nodeData = node.init.node;
     const id = node.init.id;
     console.log(nodeData,id);
+<<<<<<< HEAD
+>>>>>>> parent of 6e55476c (prefect)
+=======
 >>>>>>> parent of 6e55476c (prefect)
 }
 
