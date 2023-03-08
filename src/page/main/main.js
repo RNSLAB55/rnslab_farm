@@ -10,11 +10,15 @@ import leftIcon from "../../assets/img/left.png";
 const Main = () => {
     const id = useLocation().state.id;
     const node = useLocation().state.node;
+<<<<<<< HEAD
     const userNode = useLocation().state.userNode;
     const sensorWithRangeLoading = useLocation();
     const rangeData =useLocation().state.rangeData;
     const last_timestamp = useLocation().state.last_timestamp;
     console.log(id, node, userNode);
+=======
+    console.log(id, node);
+>>>>>>> parent of 6e55476c (prefect)
     const [menu, setMenu] = useState(1);
     const changeMenu = (menuNo) => {
         setMenu(menuNo);
@@ -51,7 +55,7 @@ const Main = () => {
                         spinLoading()
                     ):(
                         <>
-                            <div className="title">{userNode.node_Type === null ? node.node_id : userNode.node_Type}</div>
+                            <div className="title">{node.node_id}</div>
                             <div className="temp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                         </>    
                     )}
@@ -78,7 +82,7 @@ const Main = () => {
                     {menu === 1 ? (
                         <EverySensor init={{node,id,sensorWithRangeLoading,rangeData,last_timestamp}}></EverySensor>
                     ): menu === 4 ? (
-                        <Setting changeMenu={changeMenu} init={{node,id}}></Setting>
+                        <Setting changeMenu={changeMenu} init={node.state}></Setting>
                     ) : null}
                 </div>
             )}

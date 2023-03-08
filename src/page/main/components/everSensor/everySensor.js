@@ -1,16 +1,6 @@
-import UserNode from "../../../../api/userNode";
 
-import moment from "moment";
-import { SpinLoading, Toast } from "antd-mobile";
-import { useNavigate } from "react-router-dom";
 
-import METHANEImg from "../../../../assets/img/methane.png";
-import NOxImg from "../../../../assets/img/bus.png";
-import coImg from "../../../../assets/img/carbon-monoxide.png";
-import TEMPImg from "../../../../assets/img/temperature.png";
-import HUMImg from "../../../../assets/img/humidity.png";
-import H2SImg from "../../../../assets/img/sulfide.png";
-
+<<<<<<< HEAD
 const EverySensor = (props) => {
     const navigate = useNavigate();
     const {node,id,sensorWithRangeLoading,rangeData,last_timestamp} = props.init;
@@ -157,6 +147,12 @@ const EverySensor = (props) => {
             )}
         </>
     )
+=======
+const EverySensor = (node) => {
+    const nodeData = node.init.node;
+    const id = node.init.id;
+    console.log(nodeData,id);
+>>>>>>> parent of 6e55476c (prefect)
 }
 
 export default EverySensor;
