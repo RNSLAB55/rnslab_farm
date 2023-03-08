@@ -1,15 +1,12 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { SpinLoading } from "antd-mobile";
-import moment from "moment";
-import axios from "axios";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import Nodes from "../api/nodes";
-import InputData from "../api/inputData";
+import UserNodes from "../api/userNodes";
 
 const Type = () => {
     const id = useLocation().state;
-    const navigate = useNavigate();
     const {nodes,nodesLoading} = Nodes();
+<<<<<<< HEAD
     const {inputDataLoading} = InputData(nodes, id);
     const [inputId, setInputId] = useState("");
     
@@ -141,6 +138,13 @@ const Type = () => {
             )}    
         </>
     )
+=======
+    const {userNodes, userNodesLoading} = UserNodes();
+
+    useEffect(() => {
+        console.log(id,nodes, nodesLoading, userNodes, userNodesLoading);
+    },[nodes]);
+>>>>>>> parent of 2b84e813 (update)
 }
 
 export default Type;

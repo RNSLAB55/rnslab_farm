@@ -65,33 +65,7 @@
   text-align: right;
 }
 .type .body .center {
-  margin-top: 15px;
-}
-
-.type .body .inputBox {
-  margin-top: 15px;
-  display: flex;
-  margin: 1.5% 4% 1.5%;
-  background-color: white;
-  height: 40px;
-  border-radius: 4px;
-}
-
-.type .body .inputBox .inputText {
-  width: 80%;
-  padding: 1%;
-  margin-right: 1%;
-  border-radius: 4px;
-  border: 0.5px solid;
-}
-
-.type .body .inputBox .addNode {
-  width: 18%;
-  background: #22AF4F;
-  color: white;
-  font-family: 'Noto Sans KR Bold';
-  border: 0px;
-  border-radius: 4px;
+  margin-top: 20px;
 }
 
 .type .body .center .item {

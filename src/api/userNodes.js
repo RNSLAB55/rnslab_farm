@@ -7,7 +7,7 @@ const UserNodes = () => {
 
     useEffect(() => {
         setUserNodesLoading(true);
-        axios.post('http://localhost:3003/getusernodes').then((res) => {setUserNodes(res.data); console.log(res)});
+        axios.post('http://localhost:3003/getusernodes').then((res) => setUserNodes(res.data));
         setUserNodesLoading(false);
     },[]);
 
