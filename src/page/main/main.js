@@ -12,11 +12,15 @@ const Main = () => {
     const node = useLocation().state.node;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     const userNode = useLocation().state.userNode;
     const sensorWithRangeLoading = useLocation();
     const rangeData =useLocation().state.rangeData;
     const last_timestamp = useLocation().state.last_timestamp;
     console.log(id, node, userNode);
+=======
+    console.log(id, node);
+>>>>>>> parent of 6e55476c (prefect)
 =======
     console.log(id, node);
 >>>>>>> parent of 6e55476c (prefect)
