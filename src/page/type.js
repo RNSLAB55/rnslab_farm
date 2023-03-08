@@ -12,9 +12,14 @@ const Type = () => {
     const {nodes,nodesLoading} = Nodes();
     const {inputDataLoading} = InputData(nodes, id);
     const [inputId, setInputId] = useState("");
+    
 
     const [userNodes, setUserNodes] = useState([]);
     const [userNodesLoading, setUserNodesLoading] = useState(false);
+
+    const [range, setRange] = useState(null);
+    const [sensorWithRangeLoading, setSensorWithRangeLoading] = useState(false);
+    const [rangeData, setRangeData] = useState([]);
 
     const render = () => {
         setUserNodesLoading(true);
@@ -46,6 +51,36 @@ const Type = () => {
                 <p style={{marginTop: "20px"}}>Loading...</p>
             </div>
         )
+    }
+    
+    const moveMain = async (node,userNode) => {
+        try {
+            const last_timestamp = moment(node.last_timestamp).format('YYYY-MM-DD HH:mm:ss');
+            if(last_timestamp){
+                setRange([moment(last_timestamp).subtract(1, "days"), moment(last_timestamp),])
+            }
+            setSensorWithRangeLoading(true);
+            range && axios.get("/api/v1.0/storage", {
+                headers: {
+                    Token:
+                    "203c700cf48e8185060bf4401445e70a2d50598c54fdce4b078eb5d3af580e0a",
+                },
+                params: {
+                    nid: `${node.node_id}`,
+                    from: range[0].toString(),
+                    to: range[1].toString(),
+                },
+            }).then((res) => {
+                console.log(res);
+                setRangeData(res.data.data);
+                setSensorWithRangeLoading(false);
+                if(rangeData !== null) {
+                    navigate("/main", {state : {node,userNode,id,sensorWithRangeLoading,rangeData,last_timestamp}});
+                }
+            })
+        }catch(e){
+            console.log(e);
+        }
     }
 
     return (
@@ -82,7 +117,7 @@ const Type = () => {
                                             </div>
                                             <div className="title">최근갱신</div>
                                             <div style={{fontSize:"12px"}}>{moment(node.last_timestamp).format("YYYY-MM-DD hh:mm:ss")}</div>
-                                            <button onClick={() => {navigate("/main", {state : {node,userNode,id}})}}>선택</button>
+                                            <button onClick={() => {moveMain(node,userNode)}}>선택</button>
                                         </div>
                                     </div>
                                     ) : null

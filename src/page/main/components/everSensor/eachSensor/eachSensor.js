@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 
 import leftIcon from "../../../../../assets/img/left.png";
-import useSensorWithRange from "../../../../../api/sensorWithRange";
 import moment from "moment";
 import { unit } from "../../../../../common";
 import { SpinLoading } from "antd-mobile";
@@ -39,7 +38,6 @@ const nameByItem = (item) => {
 };
 
 const EachSensor = () => {
-  const nodeid = useLocation();
   const [maxDate, setMaxDate] = useState(null);
   const [minDate, setMinDate] = useState(null);
   const [maxVal, setMaxVal] = useState(null);
@@ -48,21 +46,17 @@ const EachSensor = () => {
   const {
     sensorWithRangeLoading,
     rangeData,
-    last_timestamp,
-    lastWeekRangeData,
-    lastDayRangeData,
-  } = useSensorWithRange(nodeid.state);
+    last_timestamp} = useLocation().state;
+  console.log(useLocation())
   console.log(
     sensorWithRangeLoading,
     rangeData,
-    last_timestamp,
-    lastWeekRangeData,
-    lastDayRangeData
+    last_timestamp
   );
   const { item } = useParams();
 
   useEffect(() => {
-    if (lastWeekRangeData.length > 0) {
+    if (rangeData.length > 0) {
       setLocalData(
         reverse(
           map(rangeData, (p) => {
@@ -73,7 +67,7 @@ const EachSensor = () => {
       );
       setMaxVal(
         maxBy(
-          map(lastWeekRangeData, (p) => {
+          map(rangeData, (p) => {
             return p.value;
           }),
           item
@@ -81,7 +75,7 @@ const EachSensor = () => {
       );
       setMinVal(
         minBy(
-          map(lastWeekRangeData, (p) => {
+          map(rangeData, (p) => {
             return p.value;
           }),
           item
@@ -89,7 +83,7 @@ const EachSensor = () => {
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lastWeekRangeData]);
+  }, [rangeData]);
   return (
     <div className="eachSensor">
       <div className="header">
@@ -194,8 +188,8 @@ const EachSensor = () => {
               <div className="value">
                 <div>지난주의 평균값</div>
                 <div style={{ color: "#22AF4F" }}>
-                  {lastWeekRangeData.length > 0 &&
-                    meanBy(lastWeekRangeData, (p) => {
+                  {rangeData.length > 0 &&
+                    meanBy(rangeData, (p) => {
                       return p.value[item];
                     }).toFixed(1)}
                   {unit(item)}
@@ -207,7 +201,7 @@ const EachSensor = () => {
                 <div>{nameByItem(item)} 최대</div>
                 <div>
                   <div className="range">{maxDate}</div>
-                  {lastWeekRangeData.length > 0 && maxVal}
+                  {rangeData.length > 0 && maxVal}
                   {unit(item)}
                 </div>
               </div>
@@ -215,7 +209,7 @@ const EachSensor = () => {
                 <div>{nameByItem(item)} 최소</div>
                 <div>
                   <div className="range">{minDate}</div>
-                  {lastWeekRangeData.length > 0 && minVal}
+                  {rangeData.length > 0 && minVal}
                   {unit(item)}
                 </div>
               </div>

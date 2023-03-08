@@ -11,11 +11,11 @@ import TEMPImg from "../../../../assets/img/temperature.png";
 import HUMImg from "../../../../assets/img/humidity.png";
 import H2SImg from "../../../../assets/img/sulfide.png";
 
-const EverySensor = (node) => {
+const EverySensor = (props) => {
     const navigate = useNavigate();
-    const nodeData = node.init.node;
+    const {node,id,sensorWithRangeLoading,rangeData,last_timestamp} = props.init;
+    const nodeData = node;
     const nodeId = nodeData.node_id;
-    const id = node.init.id;
     const {userNode, userNodeLoading} = UserNode(nodeId, id);
     const userNodeData = nodeData.last_data;
     console.log(nodeData,id,userNode,userNodeLoading,userNodeData);
@@ -58,7 +58,7 @@ const EverySensor = (node) => {
 
         return (
             <div className="item" id={setId()} onClick={() => {
-                value !== undefined ? navigate(`/eachSensor/${item}`, {state : nodeData.node_id}) : Toast.show({content : "no data", position:"bottom"});
+                value !== undefined ? navigate(`/eachSensor/${item}`, {state : {sensorWithRangeLoading,rangeData,last_timestamp}}) : Toast.show({content : "no data", position:"bottom"});
             }}>
                 <div className="imgArea">
                     <img src={img} alt=""></img>

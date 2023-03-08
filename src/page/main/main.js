@@ -11,6 +11,9 @@ const Main = () => {
     const id = useLocation().state.id;
     const node = useLocation().state.node;
     const userNode = useLocation().state.userNode;
+    const sensorWithRangeLoading = useLocation();
+    const rangeData =useLocation().state.rangeData;
+    const last_timestamp = useLocation().state.last_timestamp;
     console.log(id, node, userNode);
     const [menu, setMenu] = useState(1);
     const changeMenu = (menuNo) => {
@@ -73,7 +76,7 @@ const Main = () => {
             {node == null ? null : (
                 <div className="body">
                     {menu === 1 ? (
-                        <EverySensor init={{node,id}}></EverySensor>
+                        <EverySensor init={{node,id,sensorWithRangeLoading,rangeData,last_timestamp}}></EverySensor>
                     ): menu === 4 ? (
                         <Setting changeMenu={changeMenu} init={{node,id}}></Setting>
                     ) : null}
