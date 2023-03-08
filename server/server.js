@@ -45,6 +45,22 @@ app.post('/getusernodes', (req,res) => {
             res.send(rows);
         }
     });
+<<<<<<< HEAD
+=======
+});
+
+app.post('/inputdata', (req, res) => {
+    const id = req.body.id;
+    const nodeId = req.body.nodeId;
+    connection.query("INSERT INTO nodes (node_Id, id,MAXT,MAXH,MAXCO,MAXMETHAN,MAXH2S,MAXNOX,MAXCO2,MAXEC,MAXEH,MAXSH,MAXST,MAXAQS,MAXCH4,MINT,MINH,MINCO,MINMETHAN,MINH2S,MINNOX,MINCO2,MINEC,MINEH,MINSH,MINST,MINAQS,MINCH4) SELECT ?,?,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 FROM dual where not exists (SELECT node_Id, id from nodes WHERE node_Id =? and id =?);",[nodeId,id,nodeId,id],
+    function(err,rows,fields) {
+        if(err) {
+            console.log(err);
+        }else{
+            res.send(rows);
+        }
+    });
+>>>>>>> parent of 6e55476c (prefect)
 })
 
 app.listen(post, () => {

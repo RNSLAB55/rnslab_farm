@@ -117,7 +117,11 @@ const Type = () => {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                                             <button onClick={() => {moveMain(node,userNode)}}>선택</button>
+=======
+                                            <button onClick={() => {navigate("/main", {state : {node,id}})}}>선택</button>
+>>>>>>> parent of 6e55476c (prefect)
 =======
                                             <button onClick={() => {navigate("/main", {state : {node,id}})}}>선택</button>
 >>>>>>> parent of 6e55476c (prefect)
