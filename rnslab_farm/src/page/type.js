@@ -1,11 +1,13 @@
-import { useLocation } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
 import { SpinLoading } from "antd-mobile";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import moment from "moment";
 
 import InputDataNodes from "../api/inputDataNodes";
 
 const Type = () => {
+    const navigate = useNavigate();
     const {id,nodes} = useLocation().state;
 
     //id와 맞는 node들을 가지는 변수
@@ -14,7 +16,10 @@ const Type = () => {
 
     //추가할 node의 이름 
     const [inputId, setInputId] = useState("");
-    let inputDataLoading = false;
+    const [inputIdLoading, setInputIdLoading] = useState(false);
+    
+    //DB에 유저의 기기 노드들 추가
+    const {inputDataLoading} = InputDataNodes(nodes, id);
 
 
     //로딩중
@@ -43,10 +48,16 @@ const Type = () => {
 
     //DB에 노드 추가
     const addUserNode = () => {
-        nodes && nodes.map((node) => {
-            if(node.node_id === inputId){
-                const nodeId = node.node_id;
-                inputDataLoading = InputDataNodes(nodeId, id);
+        nodes && nodes.map(async (node) => {
+            setInputIdLoading(true);
+            try {
+                if(node.node_id === inputId) {
+                    const nodeId = node.node_id;
+                    await axios.post("/addNode",{id, nodeId});
+                    setInputIdLoading(false);
+                }
+            }catch(err) {
+                console.log(err);
             }
         });
     }
@@ -64,41 +75,52 @@ const Type = () => {
         }
     }
 
-    //유저의 노드의 개수가 0이면 노드(api)에서 자기의 id와 맞는 노드들 DB에 추가하기
-    const renderUserNodes = () => {
-        nodes && nodes.map((node) => {
-            if(node.node_desc === id) {
-                const nodeId = node.node_id;
-                inputDataLoading = InputDataNodes(nodeId, id);
-            }
-        });
-    }
-
 
     //처음에 유저노드들 가져오기
     useEffect(() => {
         render();
-    },[]);
-
-    useEffect(() => {
-        console.log(userNodes);
-        if(userNodes !== undefined) {
-            if(userNodes.length === 0){
-                renderUserNodes();
-            }
-        }
-    },[userNodes]);
+    },[inputDataLoading, inputIdLoading]);
     
     return (
         <>
-            {nodes === null ? spinLoading() : userNodesLoading ? spinLoading() : inputDataLoading ? spinLoading() : (
+            {nodes === null ? spinLoading() : userNodesLoading ? spinLoading() : inputDataLoading ? spinLoading() : inputIdLoading ? spinLoading() : (
                 <div className="type">
                     <div className="header">프로필 선택</div>
                     <div className="body">
                         <div className="top">보유 기기 : {userNodesCount()}개</div>
                         <div className="inputBox">
                             <input type="text" className="inputText" placeholder="node의 아이디를 입력해주세요 ex) LW0000000000000001" onChange={(e) => setInputId(e.target.value)}/>
-                            <button className="addNode" onClick={addUserNode()}>add</button>
+                            <button className="addNode" onClick={addUserNode}>add</button>
+                        </div>
+                        <div className="center">
+                            {nodes && nodes.map((node) => (
+                                userNodes && userNodes.map((userNode) => (
+                                    userNode.node_Id === node.node_id && userNode.id === id ? (
+                                        <div className="item" key={node.node_id}>
+                                        <div className="info">
+                                            <div className="title">프로필 명</div>
+                                            <div>{userNode.node_Type === null ? node.node_id : userNode.node_Type}</div>
+                                            <div className="title">type</div>
+                                            <div>{node.node_type.split('"')[3]}</div>
+                                            <div className="title">생성일</div>
+                                            <div>{moment(node.created_at).format("YYYY-MM-DD")}</div>
+                                            <div className="title">desc</div>
+                                            <div>{node.node_desc}</div> 
+                                        </div>
+                                        <div className="status">
+                                            <div style={{display: "flex", justifyContent: "flex-end", padding:"10px"}}>
+                                                <div style={{background:"#22af4f", borderRadius:"100%", height:"14px", width:"14px", marginBottom:"20px",}}>
+                                                    &nbsp;
+                                                </div>
+                                            </div>
+                                            <div className="title">최근갱신</div>
+                                            <div style={{fontSize:"12px"}}>{moment(node.last_timestamp).format("YYYY-MM-DD hh:mm:ss")}</div>
+                                            <button onClick={() => navigate("/main",{state : {nodes,node,userNode}})}>선택</button>
+                                        </div>
+                                    </div>
+                                    ) : null
+                                ))
+                            ))}
                         </div>
                     </div>
                 </div>

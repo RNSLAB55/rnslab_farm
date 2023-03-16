@@ -29,6 +29,23 @@ const setOptions = (url) => {
     return options;
 }
 
+const storageSetOptions = (nodeId, url, range) => {
+    const options = {
+        uri : url,
+        headers: {
+            Token:
+              "203c700cf48e8185060bf4401445e70a2d50598c54fdce4b078eb5d3af580e0a",
+        },
+        params: {
+            nid: `${nodeId}`,
+            from: range[0].toString(),
+            to: range[1].toString()
+        },
+        "rejectUnauthorized": false,
+    }
+    return options;
+}
+
 app.get('/', (req, res) => {
     res.send('hi');
 });
@@ -56,6 +73,38 @@ app.post('/getNodes', (req, res) => {
     })
 });
 
+app.post('/getStorage', (req, res) => {
+    const nodeId = req.body.nodeId;
+    const range = req.body.range;
+    const url = req.body.url;
+    console.log(nodeId, range, url);
+    request(storageSetOptions(nodeId, url, range), function(err, rows) {
+        if(err){
+            console.log(err);
+        }else {
+            console.log(rows.body);
+            jsonData = JSON.parse(JSON.stringify(rows.body, null, 2));
+            res.send(jsonData);
+        }
+    });
+    res.setHeader('Connection', 'close');
+});
+
+app.post('/updateNodeType', (req, res) => {
+    const nodeType = req.body.nodeType;
+    const userId = req.body.userId;
+    const nodeId = req.body.nodeId;
+    connection.query('UPDATE nodes SET node_Type=? where node_Id=? AND id=?',[nodeType, nodeId, userId], 
+    function(err, rows) {
+        if(err) {
+            console.log(err);
+        }else {
+            res.send(rows);
+            console.log(rows);
+        }
+    })
+});
+
 app.post('/getUserNodes', (req, res) => {
     const id = req.body.id;
     connection.query("SELECT * FROM nodes WHERE id = ?", [id], 
@@ -79,6 +128,21 @@ app.post('/addNode', (req, res) => {
             res.send(rows);
         }
     });
+});
+
+app.post('/updateSetting', (req, res) => {
+    const uppercase = req.body.uppercase;
+    const value = req.body.value;
+    const nodeId = req.body.nodeId;
+    const userId = req.body.userId;
+    connection.query(`UPDATE nodes SET ${uppercase}=? WHERE node_Id=? and id=?;`,[value, nodeId, userId],
+    function(err,rows) {
+        if(err){
+            console.log(err);
+        }else {
+            res.send(rows);
+        }
+    })
 })
 
 

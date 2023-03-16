@@ -1,18 +1,25 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 
-const InputDataNodes = async (nodeId, id) => {
+const InputDataNodes =(nodes, id) => {
     const [inputDataLoading, setInputDataLoading] = useState(false);
-    
-    try {
-        setInputDataLoading(true);
-        const response = await axios.post('/addNode',{id,nodeId});
-        setInputDataLoading(false);
-        return inputDataLoading;
-    }catch(err) {
-        console.log(err);
-        return true;
-    }
+
+    useEffect(() => {
+        nodes && nodes.map(async (node) => {
+            if(node.node_desc === id) {
+                setInputDataLoading(true);
+                try{
+                    const nodeId = node.node_id;
+                    await axios.post("/addNode",{id,nodeId});
+                    setInputDataLoading(false);
+                }catch(err){
+                    console.log(err);
+                }
+            }
+        })
+    },[]);
+
+    return {inputDataLoading};
 }
 
 export default InputDataNodes;
