@@ -9,6 +9,8 @@ const bodyParser = require('body-parser');
 app.use(express.json());
 app.use(express.urlencoded({extended : false}));
 
+app.use(express.static(path.join(__dirname, 'rnslab_farm/build')));
+
 let connection = mysql.createConnection({
     host: "rnslab-mysql-rds.cfd7ixkarx9q.ap-northeast-2.rds.amazonaws.com",
     user : "admin",
@@ -48,9 +50,9 @@ const storageSetOptions = (nodeId, url, range) => {
     return options;
 }
 
-app.get('/', (req, res) => {
-    res.send('hi');
-});
+app.get('/', function (요청, 응답) {
+    응답.sendFile(path.join(__dirname, '/rnslab_farm/build/index.html'));
+  });
 
 app.post('/getusers', (req, res) => {
     connection.query("SELECT * FROM setting",
@@ -150,4 +152,8 @@ app.post('/updateSetting', (req, res) => {
 
 app.listen(post, () => {
     console.log(`Connect at http://localhost:${post}`);
+});
+
+app.get('*', function (요청, 응답) {
+    응답.sendFile(path.join(__dirname, '/rnslab_farm/build/index.html'));
 });
