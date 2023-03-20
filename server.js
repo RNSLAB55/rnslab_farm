@@ -10,13 +10,15 @@ app.use(express.json());
 app.use(express.urlencoded({extended : false}));
 
 let connection = mysql.createConnection({
-    host: "localhost",
-    user : "root",
-    password : "1234",
-    database : "fam",
+    host: "rnslab-mysql-rds.cfd7ixkarx9q.ap-northeast-2.rds.amazonaws.com",
+    user : "admin",
+    password : "rnslab8521!",
+    database : "fam"
 });
 
-connection.connect();
+connection.on('error', function() {});
+
+// connection.connect();
 
 const setOptions = (url) => {
     const options ={ 
