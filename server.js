@@ -11,12 +11,19 @@ app.use(express.urlencoded({extended : false}));
 
 app.use(express.static(path.join(__dirname, 'rnslab_farm/build')));
 
+// let connection = mysql.createConnection({
+//     host: "rnslab-mysql-rds.cfd7ixkarx9q.ap-northeast-2.rds.amazonaws.com",
+//     user : "admin",
+//     password : "rnslab8521!",
+//     database : "fam"
+// });
+
 let connection = mysql.createConnection({
-    host: "rnslab-mysql-rds.cfd7ixkarx9q.ap-northeast-2.rds.amazonaws.com",
-    user : "admin",
-    password : "rnslab8521!",
-    database : "fam"
-});
+    host : "localhost",
+    user : "root",
+    password : "1234",
+    database : "fam",
+});;
 
 connection.on('error', function() {});
 
@@ -124,7 +131,7 @@ app.post('/getUserNodes', (req, res) => {
 app.post('/addNode', (req, res) => {
     const id = req.body.id;
     const nodeId = req.body.nodeId;
-    connection.query("INSERT INTO nodes (node_Id, id,MAXT,MAXH,MAXCO,MAXMETHAN,MAXH2S,MAXNOX,MAXCO2,MAXEC,MAXEH,MAXSH,MAXST,MAXAQS,MAXCH4,MINT,MINH,MINCO,MINMETHAN,MINH2S,MINNOX,MINCO2,MINEC,MINEH,MINSH,MINST,MINAQS,MINCH4) SELECT ?,?,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 FROM dual where not exists (SELECT node_Id, id from nodes WHERE node_Id =? and id =?);",[nodeId,id,nodeId,id],
+    connection.query("INSERT INTO nodes (node_Id, id,MAXT,MAXH,MAXCO,MAXMETHAN,MAXH2S,MAXNOX,MAXCO2,MAXEC,MAXEH,MAXSH,MAXST,MAXAQS,MAXCH4,MAXPM1,MAXPM10,MINT,MINH,MINCO,MINMETHAN,MINH2S,MINNOX,MINCO2,MINEC,MINEH,MINSH,MINST,MINAQS,MINCH4,MINPM1,MINPM10,MAXPM2_5,MINPM2_5) SELECT ?,?,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 FROM dual where not exists (SELECT node_Id, id from nodes WHERE node_Id =? and id =?);",[nodeId,id,nodeId,id],
     function(err, rows) {
         if(err) {
             console.log(err);

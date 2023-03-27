@@ -21,6 +21,8 @@ const Type = () => {
     //DB에 유저의 기기 노드들 추가
     const {inputDataLoading} = InputDataNodes(nodes, id);
 
+    
+    console.log(nodes);
 
     //로딩중
     const spinLoading = () => {
@@ -46,22 +48,6 @@ const Type = () => {
         }
     }
 
-    //DB에 노드 추가
-    const addUserNode = () => {
-        nodes && nodes.map(async (node) => {
-            setInputIdLoading(true);
-            try {
-                if(node.node_id === inputId) {
-                    const nodeId = node.node_id;
-                    await axios.post("/addNode",{id, nodeId});
-                    setInputIdLoading(false);
-                }
-            }catch(err) {
-                console.log(err);
-            }
-        });
-    }
-
 
     //유저의 노드들 가져오기
     const render = async() => {
@@ -73,6 +59,24 @@ const Type = () => {
         }catch(err) {
             console.log(err);
         }
+    }
+
+    //DB에 노드 추가
+    const addUserNode = () => {
+        nodes && nodes.map(async (node) => {
+            setInputIdLoading(true);
+            try {
+                if(node.node_id === inputId) {
+                    const nodeId = node.node_id;
+                    await axios.post("/addNode",{id, nodeId});
+                    setInputIdLoading(false);
+                    render();
+                }
+            }catch(err) {
+                console.log(err);
+                setInputIdLoading(false);
+            }
+        });
     }
 
 

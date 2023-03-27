@@ -8,10 +8,11 @@ import TEMPImg from "../../../../assets/img/temperature.png";
 import HUMImg from "../../../../assets/img/humidity.png";
 import H2SImg from "../../../../assets/img/sulfide.png";
 
+import { unit } from "../../../../common";
+
 const EverySensor = (props) => {
     const {node, userNode}  = props.init;
     const sensorValue = node.last_data;
-    console.log(node,userNode);
 
     const spinLoading = () => {
         return (
@@ -31,6 +32,7 @@ const EverySensor = (props) => {
 
     const Sensor = (props) => {
         const {max, min, img, title, value, item} = props;
+        console.log(max, min, img, title, value, item);
 
         const isSetting = () => {
             return ( (max === 0 && min === 0) || max === undefined);
@@ -44,25 +46,28 @@ const EverySensor = (props) => {
 
         const setFontColor = () => {
             let color = "#22AF4F";
-            if(value) {
-                if(outOfRange) {
+            if(value || value >=0) {
+                if(outOfRange()) {
                     color = "#EBC271";
-                }else{
-                    color = "red";
                 }
-                return color;
+            }else{
+                color = "red";
             }
+            console.log(color);
+            return color;
         }
+
         const setId = () => {
             let id = "";
-            if(value) {
-                if(outOfRange) {
+            if(value || value >=0) {
+                console.log(outOfRange());
+                if(outOfRange()) {
                     id = "outOfRange";
-                }else {
-                    id = "noValue";
                 }
-                return id;
+            }else {
+                id = "noValue";
             }
+            return id;
         }
 
         return (
@@ -84,8 +89,8 @@ const EverySensor = (props) => {
                     </div>
                 </div>
                 <div className="valueArea">
-                    <span style={{fontSize: "24px", color: setFontColor(), marginTop: value ? "" : "-10px"}}></span>
-                    <span style={{marginTop:"10px", paddingLeft: "4px"}}>{value}</span>
+                    <span style={{fontSize: "24px", color: setFontColor(), marginTop: value ? "" : "-10px"}}>{value>=0 ? value : "noData"}</span>
+                    <span style={{marginTop:"10px", paddingLeft: "6px", fontSize:"12px"}}>{value>=0 ? unit(item) : null}</span>
                 </div>
             </div>
         )
@@ -94,7 +99,7 @@ const EverySensor = (props) => {
     const NoSensor = (props) => {
         const {img, title, value} = props;
         return (
-            <div className="item" id="outOfRange">
+            <div className="item" id="no">
                 <div className="imgArea">
                     <img src={img} alt=""></img>
                 </div>
@@ -148,13 +153,20 @@ const EverySensor = (props) => {
                     </>
                 ) : node.node_type.split('"')[3].slice(3,6) === "324" ? (
                     <>
+                        <Sensor max={userNode.MAXAQS} min={userNode.MINAQS} img={TEMPImg} title="유해가스" value={sensorValue && sensorValue.AQS} item="AQS"></Sensor>
+                    </>
+                ) : node.node_type.split('"')[3].slice(3,6) === "334" ? (
+                    <>
                         <Sensor max={userNode.MAXT} min={userNode.MINT} img={TEMPImg} title="온도" value={sensorValue && sensorValue.T} item="T"></Sensor>
                         <Sensor max={userNode.MAXH} min={userNode.MINH} img={HUMImg} title="습도" value={sensorValue && sensorValue.H} item="H"></Sensor>
-                        <Sensor max={userNode.MAXCO2} min={userNode.MINCO2} img={coImg} title="이산화탄소" value={sensorValue && sensorValue.CO2} item="CO2"></Sensor>
-                        <Sensor max={userNode.MAXNOX} min={userNode.MINNOX} img={NOxImg} title="질소화합물가스" value={sensorValue && sensorValue.NOx} item="NOX"></Sensor>
+                        <Sensor max={userNode.MAXCO2} min={userNode.MINCO2} img={coImg} title="이산화탄소" value={sensorValue && sensorValue.Co2} item="Co2"></Sensor>
+                        <Sensor max={userNode.MAXNOX} min={userNode.MINNOX} img={NOxImg} title="질소화합물가스" value={sensorValue && sensorValue.NOX} item="NOX"></Sensor>
                         <Sensor max={userNode.MAXAQS} min={userNode.MINAQS} img={TEMPImg} title="유해가스" value={sensorValue && sensorValue.AQS} item="AQS"></Sensor>
                         <Sensor max={userNode.MAXCH4} min={userNode.MINCH4} img={TEMPImg} title="메테인" value={sensorValue && sensorValue.CH4} item="CH4"></Sensor>
-                        <NoSensor img={TEMPImg} title="배터리" value={sensorValue && sensorValue.B}></NoSensor>
+                        <Sensor max={userNode.MAXPM1} min={userNode.MINPM1} img={TEMPImg} title="PM1" value={sensorValue && sensorValue.PM1} item="PM1"></Sensor>
+                        <Sensor max={userNode.MAXPM10} min={userNode.MINPM10} img={TEMPImg} title="PM10" value={sensorValue && sensorValue.PM10} item="PM10"></Sensor>
+                        <Sensor max={userNode.MAXPM2_5} min={userNode.MINPM2_5} img={TEMPImg} title="PM2.5" value={sensorValue && sensorValue.PM2_5} item="PM2_5"></Sensor>
+                        <NoSensor img={TEMPImg} title="버전" value={sensorValue && sensorValue.V}></NoSensor>
                     </>
                 ) : spinLoading()}
             </div>

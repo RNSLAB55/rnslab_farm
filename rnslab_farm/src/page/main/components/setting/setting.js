@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { SpinLoading } from "antd-mobile";
 
 import METHANEImg from "../../../../assets/img/methane.png";
 import NOxImg from "../../../../assets/img/bus.png";
@@ -20,6 +21,22 @@ const Setting = (props) => {
     const userId = userNode.id;
     const nodeId = userNode.node_Id;
     const [nodeType, setNodeType] = useState("");
+
+    const spinLoading = () => {
+        return (
+            <div style={{textAlign: 'center'}}>
+            <div style={{
+                flexGrow: 2,
+                display: "flex",
+                paddingTop: "70%",
+                justifyContent: "center",
+            }}>
+                <SpinLoading></SpinLoading>
+            </div>
+            <p style={{marginTop:"20px"}}>Loading...</p>
+        </div>
+        )
+    }
 
     console.log(node, userNode);
     const Sensor = (props) => {
@@ -67,8 +84,8 @@ const Setting = (props) => {
                 eventArray.push( event.target[i]);
             }
             UpdateSetting(eventArray,nodeId,userId);
-        }else if(node && node.node_type.split('"')[3].slice(3,6) === "324"){
-            for(let i=0; i<12; i++){
+        }else if(node && node.node_type.split('"')[3].slice(3,6) === "334"){
+            for(let i=0; i<18; i++){
                 eventArray.push( event.target[i]);
             }
             UpdateSetting(eventArray,nodeId,userId);
@@ -115,14 +132,21 @@ const Setting = (props) => {
                             </>
                         ) : node && node.node_type.split('"')[3].slice(3,6) === "324" ? (
                             <>
+                                <Sensor max={userNode.MAXAQS} min={userNode.MINAQS} img={TEMPImg} title="유해가스" item="AQS"></Sensor>
+                            </>
+                        ) : node && node.node_type.split('"')[3].slice(3,6) === "334" ? (
+                            <>
                                 <Sensor max={userNode.MAXT} min={userNode.MINT} img={TEMPImg} title="온도"  item="T"></Sensor>
                                 <Sensor max={userNode.MAXH} min={userNode.MINH} img={HUMImg} title="습도"  item="H"></Sensor>
                                 <Sensor max={userNode.MAXCO2} min={userNode.MINCO2} img={coImg} title="이산화탄소" item="CO2"></Sensor>
                                 <Sensor max={userNode.MAXNOX} min={userNode.MINNOX} img={NOxImg} title="질소화합물가스" item="NOX"></Sensor>
                                 <Sensor max={userNode.MAXAQS} min={userNode.MINAQS} img={TEMPImg} title="유해가스" item="AQS"></Sensor>
                                 <Sensor max={userNode.MAXCH4} min={userNode.MINCH4} img={TEMPImg} title="메테인" item="CH4"></Sensor>
+                                <Sensor max={userNode.MAXPM1} min={userNode.MINPM1} img={TEMPImg} title="PM1" item="PM1"></Sensor>
+                                <Sensor max={userNode.MAXPM10} min={userNode.MINPM10} img={TEMPImg} title="PM10"item="PM10"></Sensor>
+                                <Sensor max={userNode.MAXPM2_5} min={userNode.MINPM2_5} img={TEMPImg} title="PM2.5" item="PM2_5"></Sensor>
                             </>
-                        ) : null}
+                        ): spinLoading()}
                     </div>
                     <div className="footer">
                         <button type="submit">저장하기</button>
