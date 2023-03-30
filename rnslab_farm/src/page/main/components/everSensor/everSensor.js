@@ -1,5 +1,6 @@
 import { SpinLoading } from "antd-mobile";
 import moment from "moment";
+import { useState } from "react";
 
 import METHANEImg from "../../../../assets/img/methane.png";
 import NOxImg from "../../../../assets/img/bus.png";
@@ -7,12 +8,22 @@ import coImg from "../../../../assets/img/carbon-monoxide.png";
 import TEMPImg from "../../../../assets/img/temperature.png";
 import HUMImg from "../../../../assets/img/humidity.png";
 import H2SImg from "../../../../assets/img/sulfide.png";
+import co2Img from "../../../../assets/img/co2.png";
+import ECImg from "../../../../assets/img/ec.png";
+import soilImg from "../../../../assets/img/soil.png";
+import VImg from "../../../../assets/img/version.png";
+import BImg from "../../../../assets/img/battery.png";
+import pm1Img from "../../../../assets/img/pm1.png";
+import pm10Img from "../../../../assets/img/pm10.png";
+import pm25Img from "../../../../assets/img/pm2_5.png";
+import aqsImg from "../../../../assets/img/aqs.png"
 
 import { unit } from "../../../../common";
 
 const EverySensor = (props) => {
     const {node, userNode}  = props.init;
     const sensorValue = node.last_data;
+    const [clicked, setCliked] = useState(false);
 
     const spinLoading = () => {
         return (
@@ -32,7 +43,6 @@ const EverySensor = (props) => {
 
     const Sensor = (props) => {
         const {max, min, img, title, value, item} = props;
-        console.log(max, min, img, title, value, item);
 
         const isSetting = () => {
             return ( (max === 0 && min === 0) || max === undefined);
@@ -53,14 +63,12 @@ const EverySensor = (props) => {
             }else{
                 color = "red";
             }
-            console.log(color);
             return color;
         }
 
         const setId = () => {
             let id = "";
             if(value || value >=0) {
-                console.log(outOfRange());
                 if(outOfRange()) {
                     id = "outOfRange";
                 }
@@ -117,6 +125,10 @@ const EverySensor = (props) => {
         )
     }
 
+    const checkClick = () => {
+        setCliked(!clicked);
+    }
+
     return (
         <>
             <div className="everySensor">
@@ -130,8 +142,15 @@ const EverySensor = (props) => {
                     <>
                         <Sensor max={userNode.MAXT} min={userNode.MINT} img={TEMPImg} title="온도" value={sensorValue && sensorValue.T} item="T"></Sensor>
                         <Sensor max={userNode.MAXH} min={userNode.MINH} img={HUMImg} title="습도" value={sensorValue && sensorValue.H} item="H"></Sensor>
-                        <NoSensor img={TEMPImg} title="배터리" value={sensorValue && sensorValue.B}></NoSensor>
-                        <NoSensor img={TEMPImg} title="버전" value={sensorValue && sensorValue.V}></NoSensor>
+                        {clicked ? 
+                            <>
+                                <NoSensor img={BImg} title="배터리" value={sensorValue && sensorValue.B}></NoSensor>
+                                <NoSensor img={VImg} title="버전" value={sensorValue && sensorValue.V}></NoSensor>
+                            </> 
+                        : null}
+                        <div className="ReadMore">
+                            <button onClick={checkClick}>{clicked ? "버전 및 배터리 숨기기" : "자세히 보기" }</button>
+                        </div>
                     </>
                 ) : node.node_type.split('"')[3].slice(3,6) === "323" ? (
                     <>
@@ -139,17 +158,23 @@ const EverySensor = (props) => {
                         <Sensor max={userNode.MAXSMETHAN} min={userNode.MINSMETHAN} img={METHANEImg} title="메탄가스" value={sensorValue && sensorValue.METHANE} item="METHANE"></Sensor>
                         <Sensor max={userNode.MAXH2S} min={userNode.MINH2S} img={H2SImg} title="황화수소가스" value={sensorValue && sensorValue.H2S} item="H2S"></Sensor>
                         <Sensor max={userNode.MAXNOX} min={userNode.MINNOX} img={NOxImg} title="질소화합물가스" value={sensorValue && sensorValue.NOx} item="NOX"></Sensor>
-                        <NoSensor img={TEMPImg} title="버전" value={sensorValue && sensorValue.V}></NoSensor>
+                        {clicked ? <NoSensor img={VImg} title="버전" value={sensorValue && sensorValue.V}></NoSensor> : null}
+                        <div className="ReadMore">
+                            <button onClick={checkClick}>{clicked ? "버전 숨기기" : "자세히 보기" }</button>
+                        </div>
                     </>
                 ) : node.node_type.split('"')[3].slice(3,6) === "321" ? (
                     <>
                         <Sensor max={userNode.MAXT} min={userNode.MINT} img={TEMPImg} title="온도" value={sensorValue && sensorValue.T} item="T"></Sensor>
                         <Sensor max={userNode.MAXH} min={userNode.MINH} img={HUMImg} title="습도" value={sensorValue && sensorValue.H} item="H"></Sensor>
                         <Sensor max={userNode.MAXCO2} min={userNode.MINCO2} img={coImg} title="이산화탄소" value={sensorValue && sensorValue.CO2} item="CO2"></Sensor>
-                        <Sensor max={userNode.MAXEC} min={userNode.MINEC} img={HUMImg} title="전기전도도" value={sensorValue && sensorValue.EC} item="EC"></Sensor>
-                        <Sensor max={userNode.MAXSH} min={userNode.MINSH} img={HUMImg} title="소일흄" value={sensorValue && sensorValue.SH} item="SH"></Sensor>
-                        <Sensor max={userNode.MAXST} min={userNode.MINST} img={HUMImg} title="소일템" value={sensorValue && sensorValue.ST} item="ST"></Sensor>
-                        <NoSensor img={TEMPImg} title="버전" value={sensorValue && sensorValue.V}></NoSensor>
+                        <Sensor max={userNode.MAXEC} min={userNode.MINEC} img={ECImg} title="전기전도도" value={sensorValue && sensorValue.EC} item="EC"></Sensor>
+                        <Sensor max={userNode.MAXSH} min={userNode.MINSH} img={soilImg} title="소일흄" value={sensorValue && sensorValue.SH} item="SH"></Sensor>
+                        <Sensor max={userNode.MAXST} min={userNode.MINST} img={soilImg} title="소일템" value={sensorValue && sensorValue.ST} item="ST"></Sensor>
+                        {clicked ? <NoSensor img={VImg} title="버전" value={sensorValue && sensorValue.V}></NoSensor> : null}
+                        <div className="ReadMore">
+                            <button onClick={checkClick}>{clicked ? "버전 숨기기" : "자세히 보기" }</button>
+                        </div>
                     </>
                 ) : node.node_type.split('"')[3].slice(3,6) === "324" ? (
                     <>
@@ -159,14 +184,17 @@ const EverySensor = (props) => {
                     <>
                         <Sensor max={userNode.MAXT} min={userNode.MINT} img={TEMPImg} title="온도" value={sensorValue && sensorValue.T} item="T"></Sensor>
                         <Sensor max={userNode.MAXH} min={userNode.MINH} img={HUMImg} title="습도" value={sensorValue && sensorValue.H} item="H"></Sensor>
-                        <Sensor max={userNode.MAXCO2} min={userNode.MINCO2} img={coImg} title="이산화탄소" value={sensorValue && sensorValue.Co2} item="Co2"></Sensor>
+                        <Sensor max={userNode.MAXCO2} min={userNode.MINCO2} img={co2Img} title="이산화탄소" value={sensorValue && sensorValue.Co2} item="Co2"></Sensor>
                         <Sensor max={userNode.MAXNOX} min={userNode.MINNOX} img={NOxImg} title="질소화합물가스" value={sensorValue && sensorValue.NOX} item="NOX"></Sensor>
-                        <Sensor max={userNode.MAXAQS} min={userNode.MINAQS} img={TEMPImg} title="유해가스" value={sensorValue && sensorValue.AQS} item="AQS"></Sensor>
-                        <Sensor max={userNode.MAXCH4} min={userNode.MINCH4} img={TEMPImg} title="메테인" value={sensorValue && sensorValue.CH4} item="CH4"></Sensor>
-                        <Sensor max={userNode.MAXPM1} min={userNode.MINPM1} img={TEMPImg} title="PM1" value={sensorValue && sensorValue.PM1} item="PM1"></Sensor>
-                        <Sensor max={userNode.MAXPM10} min={userNode.MINPM10} img={TEMPImg} title="PM10" value={sensorValue && sensorValue.PM10} item="PM10"></Sensor>
-                        <Sensor max={userNode.MAXPM2_5} min={userNode.MINPM2_5} img={TEMPImg} title="PM2.5" value={sensorValue && sensorValue.PM2_5} item="PM2_5"></Sensor>
-                        <NoSensor img={TEMPImg} title="버전" value={sensorValue && sensorValue.V}></NoSensor>
+                        <Sensor max={userNode.MAXAQS} min={userNode.MINAQS} img={aqsImg} title="유해가스" value={sensorValue && sensorValue.AQS} item="AQS"></Sensor>
+                        <Sensor max={userNode.MAXCH4} min={userNode.MINCH4} img={METHANEImg} title="메테인" value={sensorValue && sensorValue.CH4} item="CH4"></Sensor>
+                        <Sensor max={userNode.MAXPM1} min={userNode.MINPM1} img={pm1Img} title="PM1" value={sensorValue && sensorValue.PM1} item="PM1"></Sensor>
+                        <Sensor max={userNode.MAXPM10} min={userNode.MINPM10} img={pm10Img} title="PM10" value={sensorValue && sensorValue.PM10} item="PM10"></Sensor>
+                        <Sensor max={userNode.MAXPM2_5} min={userNode.MINPM2_5} img={pm25Img} title="PM2.5" value={sensorValue && sensorValue.PM2_5} item="PM2_5"></Sensor>
+                        {clicked ? <NoSensor img={VImg} title="버전" value={sensorValue && sensorValue.V}></NoSensor> : null}
+                        <div className="ReadMore">
+                            <button onClick={checkClick}>{clicked ? "버전 숨기기" : "자세히 보기" }</button>
+                        </div>
                     </>
                 ) : spinLoading()}
             </div>

@@ -59,7 +59,7 @@ const storageSetOptions = (nodeId, url, range) => {
 
 app.get('/', function (요청, 응답) {
     응답.sendFile(path.join(__dirname, '/rnslab_farm/build/index.html'));
-  });
+});
 
 app.post('/getusers', (req, res) => {
     connection.query("SELECT * FROM setting",

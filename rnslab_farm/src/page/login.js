@@ -9,10 +9,7 @@ const Login = () => {
     const [id, setId] = useState("");
     const [pw, setPw] = useState("");
     const [users, setUsers] = useState([]);
-    const [nodes, setNodes] = useState([]);
     const [usersLoading, setUsersLoading] = useState(false);
-    const [nodesLoading, setNodesLoading] = useState(false);
-    const url = "https://iotown.rnslab.com/api/v1.0/nodes";
 
     const getUsers = async() => {
         setUsersLoading(true);
@@ -25,23 +22,13 @@ const Login = () => {
         }
     }
 
-    const getNodes = async() => {
-        setNodesLoading(true);
-        try {
-            const response = await axios.post('/getNodes', {url});
-            setNodes(response.data.nodes);
-            setNodesLoading(false);
-        }catch (err) {
-            console.log("Error >>",err);
-        }
-    }
 
     const goType = () => {
         let check = false;
         users && users.map((user) => {
             if(id === user.setting_Id && pw === user.setting_Pw){
                 check = true;
-                navigate("/type", {state : {id, nodes}});
+                navigate("/type", {state : id});
             }
         })
         if(check === false){
@@ -70,12 +57,11 @@ const Login = () => {
 
     useEffect(() => {
         getUsers();
-        getNodes();
     },[]);
 
     return (
         <div className="login">
-            {usersLoading || nodesLoading ?  spinLoading() : 
+            {usersLoading ?  spinLoading() : 
                 <>
                     <div> <img src={logo} alt=""></img></div>
                     <div className="title">로그인</div>

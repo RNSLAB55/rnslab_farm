@@ -8,7 +8,8 @@ import InputDataNodes from "../api/inputDataNodes";
 
 const Type = () => {
     const navigate = useNavigate();
-    const {id,nodes} = useLocation().state;
+    const id = useLocation().state;
+    const [nodes, setNodes] = useState([]);
 
     //id와 맞는 node들을 가지는 변수
     const [userNodes, setUserNodes] = useState();
@@ -21,8 +22,8 @@ const Type = () => {
     //DB에 유저의 기기 노드들 추가
     const {inputDataLoading} = InputDataNodes(nodes, id);
 
-    
-    console.log(nodes);
+    const [nodesLoading, setNodesLoading] = useState(false);
+    const url = "https://iotown.rnslab.com/api/v1.0/nodes";
 
     //로딩중
     const spinLoading = () => {
@@ -79,19 +80,31 @@ const Type = () => {
         });
     }
 
+    const getNodes = async() => {
+        setNodesLoading(true);
+        try {
+            const response = await axios.post('/getNodes', {url});
+            setNodes(response.data.nodes);
+            setNodesLoading(false);
+            console.log(response.data.nodes);
+        }catch (err) {
+            console.log("Error >>",err);
+        }
+    }
 
     //처음에 유저노드들 가져오기
     useEffect(() => {
         render();
+        getNodes();
     },[inputDataLoading, inputIdLoading]);
-    
+
+
     return (
         <>
-            {nodes === null ? spinLoading() : userNodesLoading ? spinLoading() : inputDataLoading ? spinLoading() : inputIdLoading ? spinLoading() : (
+            {nodes === null || userNodesLoading || inputDataLoading || inputIdLoading || nodesLoading ? spinLoading() : (
                 <div className="type">
                     <div className="header">프로필 선택</div>
                     <div className="body">
-                        <div className="top">보유 기기 : {userNodesCount()}개</div>
                         <div className="inputBox">
                             <input type="text" className="inputText" placeholder="node의 아이디를 입력해주세요 ex) LW0000000000000001" onChange={(e) => setInputId(e.target.value)}/>
                             <button className="addNode" onClick={addUserNode}>add</button>
@@ -125,6 +138,9 @@ const Type = () => {
                                     ) : null
                                 ))
                             ))}
+                        </div>
+                        <div className="bottom">
+                            <p>보유 기기 : {userNodesCount()}개</p>
                         </div>
                     </div>
                 </div>
