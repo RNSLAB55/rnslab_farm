@@ -56,7 +56,7 @@ const EverySensor = (props) => {
 
         const setFontColor = () => {
             let color = "#22AF4F";
-            if(value || value >=0) {
+            if(value || value==0) {
                 if(outOfRange()) {
                     color = "#EBC271";
                 }
@@ -68,7 +68,7 @@ const EverySensor = (props) => {
 
         const setId = () => {
             let id = "";
-            if(value || value >=0) {
+            if(value || value==0) {
                 if(outOfRange()) {
                     id = "outOfRange";
                 }
@@ -97,7 +97,7 @@ const EverySensor = (props) => {
                     </div>
                 </div>
                 <div className="valueArea">
-                    <span style={{fontSize: "24px", color: setFontColor(), marginTop: value ? "" : "-10px"}}>{value>=0 ? value : "noData"}</span>
+                    <span style={{fontSize: "24px", color: setFontColor(), marginTop: value ? "" : "-10px"}}>{value || value>=0 ? value : "noData"}</span>
                     <span style={{marginTop:"10px", paddingLeft: "6px", fontSize:"12px"}}>{value>=0 ? unit(item) : null}</span>
                 </div>
             </div>

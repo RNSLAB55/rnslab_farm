@@ -2,38 +2,22 @@ const express = require('express');
 const path = require('path');
 const post = 3003;
 const app = express();
-const mysql = require("mysql");
 const request = require('request');
 const bodyParser = require('body-parser');
+const getConnection = require("./db");
+
+require('dotenv').config();
 
 app.use(express.json());
 app.use(express.urlencoded({extended : false}));
 
 app.use(express.static(path.join(__dirname, 'rnslab_farm/build')));
 
-// let connection = mysql.createConnection({
-//     host: "rnslab-mysql-rds.cfd7ixkarx9q.ap-northeast-2.rds.amazonaws.com",
-//     user : "admin",
-//     password : "rnslab8521!",
-//     database : "fam"
-// });
-
-let connection = mysql.createConnection({
-    host : "localhost",
-    user : "root",
-    password : "1234",
-    database : "fam",
-});;
-
-connection.on('error', function() {});
-
-// connection.connect();
-
 const setOptions = (url) => {
     const options ={ 
         uri : url,
         headers : {
-            Token: "203c700cf48e8185060bf4401445e70a2d50598c54fdce4b078eb5d3af580e0a",
+            Token: process.env.TOKEN,
         },
         "rejectUnauthorized" : false,
     }
@@ -45,7 +29,7 @@ const storageSetOptions = (nodeId, url, range) => {
         uri : url,
         headers: {
             Token:
-              "203c700cf48e8185060bf4401445e70a2d50598c54fdce4b078eb5d3af580e0a",
+              process.env.TOKEN,
         },
         params: {
             nid: `${nodeId}`,
@@ -62,13 +46,16 @@ app.get('/', function (요청, 응답) {
 });
 
 app.post('/getusers', (req, res) => {
-    connection.query("SELECT * FROM setting",
-    function(err, rows, fields) {
-        if(err){
-            console.log(err);
-        }else {
-            res.send(rows);
-        }
+    getConnection((connection) => {
+        connection.query("SELECT * FROM setting",
+        function(err, rows, fields) {
+            if(err){
+                console.log(err);
+            }else {
+                res.send(rows);
+            }
+        });
+        connection.release();
     })
 });
 
@@ -105,39 +92,47 @@ app.post('/updateNodeType', (req, res) => {
     const nodeType = req.body.nodeType;
     const userId = req.body.userId;
     const nodeId = req.body.nodeId;
-    connection.query('UPDATE nodes SET node_Type=? where node_Id=? AND id=?',[nodeType, nodeId, userId], 
-    function(err, rows) {
-        if(err) {
-            console.log(err);
-        }else {
-            res.send(rows);
-            console.log(rows);
-        }
-    })
+    getConnection((connection) => {
+        connection.query('UPDATE nodes SET node_Type=? where node_Id=? AND id=?',[nodeType, nodeId, userId], 
+        function(err, rows) {
+            if(err) {
+                console.log(err);
+            }else {
+                res.send(rows);
+                console.log(rows);
+            }
+        });
+    });
 });
 
 app.post('/getUserNodes', (req, res) => {
     const id = req.body.id;
-    connection.query("SELECT * FROM nodes WHERE id = ?", [id], 
-    function(err, rows) {
-        if(err) {
-            console.log(err);
-        }else {
-            res.send(rows);
-        }
-    })
-})
+    getConnection((connection) => {
+        connection.query("SELECT * FROM nodes WHERE id = ?", [id], 
+        function(err, rows) {
+            if(err) {
+                console.log(err);
+            }else {
+                res.send(rows);
+            }
+        });
+        connection.release();
+    });
+});
 
 app.post('/addNode', (req, res) => {
     const id = req.body.id;
     const nodeId = req.body.nodeId;
-    connection.query("INSERT INTO nodes (node_Id, id,MAXT,MAXH,MAXCO,MAXMETHAN,MAXH2S,MAXNOX,MAXCO2,MAXEC,MAXEH,MAXSH,MAXST,MAXAQS,MAXCH4,MAXPM1,MAXPM10,MINT,MINH,MINCO,MINMETHAN,MINH2S,MINNOX,MINCO2,MINEC,MINEH,MINSH,MINST,MINAQS,MINCH4,MINPM1,MINPM10,MAXPM2_5,MINPM2_5) SELECT ?,?,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 FROM dual where not exists (SELECT node_Id, id from nodes WHERE node_Id =? and id =?);",[nodeId,id,nodeId,id],
-    function(err, rows) {
-        if(err) {
-            console.log(err);
-        }else {
-            res.send(rows);
-        }
+    getConnection((connection) => {
+        connection.query("INSERT INTO nodes (node_Id, id,MAXT,MAXH,MAXCO,MAXMETHAN,MAXH2S,MAXNOX,MAXCO2,MAXEC,MAXEH,MAXSH,MAXST,MAXAQS,MAXCH4,MAXPM1,MAXPM10,MINT,MINH,MINCO,MINMETHAN,MINH2S,MINNOX,MINCO2,MINEC,MINEH,MINSH,MINST,MINAQS,MINCH4,MINPM1,MINPM10,MAXPM2_5,MINPM2_5) SELECT ?,?,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 FROM dual where not exists (SELECT node_Id, id from nodes WHERE node_Id =? and id =?);",[nodeId,id,nodeId,id],
+        function(err, rows) {
+            if(err) {
+                console.log(err);
+            }else {
+                res.send(rows);
+            }
+        });
+        connection.release();
     });
 });
 
@@ -146,14 +141,17 @@ app.post('/updateSetting', (req, res) => {
     const value = req.body.value;
     const nodeId = req.body.nodeId;
     const userId = req.body.userId;
-    connection.query(`UPDATE nodes SET ${uppercase}=? WHERE node_Id=? and id=?;`,[value, nodeId, userId],
-    function(err,rows) {
-        if(err){
-            console.log(err);
-        }else {
-            res.send(rows);
-        }
-    })
+    getConnection((connection) => {
+        connection.query(`UPDATE nodes SET ${uppercase}=? WHERE node_Id=? and id=?;`,[value, nodeId, userId],
+        function(err,rows) {
+            if(err){
+                console.log(err);
+            }else {
+                res.send(rows);
+            }
+        });
+        connection.release();
+    });
 })
 
 

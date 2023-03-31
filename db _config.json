@@ -1,0 +1,16 @@
+{
+    "development" : {
+        "host" : "localhost",
+        "user" : "root",
+        "password" : "1234",
+        "database" : "fam",
+        "connectionLimit" : 30
+    },
+    "production" : {
+        "host" : "rnslab-mysql-rds.cfd7ixkarx9q.ap-northeast-2.rds.amazonaws.com",
+        "user" : "admin",
+        "password" : "rnslab8521!",
+        "database" : "fam",
+        "connectionLimit": 30
+    }
+}
