@@ -167,10 +167,10 @@ const EverySensor = (props) => {
                     <>
                         <Sensor max={userNode.MAXT} min={userNode.MINT} img={TEMPImg} title="온도" value={sensorValue && sensorValue.T} item="T"></Sensor>
                         <Sensor max={userNode.MAXH} min={userNode.MINH} img={HUMImg} title="습도" value={sensorValue && sensorValue.H} item="H"></Sensor>
-                        <Sensor max={userNode.MAXCO2} min={userNode.MINCO2} img={coImg} title="이산화탄소" value={sensorValue && sensorValue.CO2} item="CO2"></Sensor>
+                        <Sensor max={userNode.MAXCO2} min={userNode.MINCO2} img={co2Img} title="이산화탄소" value={sensorValue && sensorValue.CO2} item="CO2"></Sensor>
                         <Sensor max={userNode.MAXEC} min={userNode.MINEC} img={ECImg} title="전기전도도" value={sensorValue && sensorValue.EC} item="EC"></Sensor>
-                        <Sensor max={userNode.MAXSH} min={userNode.MINSH} img={soilImg} title="소일흄" value={sensorValue && sensorValue.SH} item="SH"></Sensor>
-                        <Sensor max={userNode.MAXST} min={userNode.MINST} img={soilImg} title="소일템" value={sensorValue && sensorValue.ST} item="ST"></Sensor>
+                        <Sensor max={userNode.MAXSH} min={userNode.MINSH} img={soilImg} title="토양습도" value={sensorValue && sensorValue.SH} item="SH"></Sensor>
+                        <Sensor max={userNode.MAXST} min={userNode.MINST} img={soilImg} title="토양온도" value={sensorValue && sensorValue.ST} item="ST"></Sensor>
                         {clicked ? <NoSensor img={VImg} title="버전" value={sensorValue && sensorValue.V}></NoSensor> : null}
                         <div className="ReadMore">
                             <button onClick={checkClick}>{clicked ? "버전 숨기기" : "자세히 보기" }</button>

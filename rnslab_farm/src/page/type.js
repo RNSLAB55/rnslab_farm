@@ -86,7 +86,6 @@ const Type = () => {
             const response = await axios.post('/getNodes', {url});
             setNodes(response.data.nodes);
             setNodesLoading(false);
-            console.log(response.data.nodes);
         }catch (err) {
             console.log("Error >>",err);
         }
