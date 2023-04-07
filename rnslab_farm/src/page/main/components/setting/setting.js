@@ -11,7 +11,8 @@ import HUMImg from "../../../../assets/img/humidity.png";
 import H2SImg from "../../../../assets/img/sulfide.png";
 import co2Img from "../../../../assets/img/co2.png";
 import ECImg from "../../../../assets/img/ec.png";
-import soilImg from "../../../../assets/img/soil.png";
+import soilTImg from "../../../../assets/img/soiltemp.png";
+import soilHImg from "../../../../assets/img/soilhum.png";
 import pm1Img from "../../../../assets/img/pm1.png";
 import pm10Img from "../../../../assets/img/pm10.png";
 import pm25Img from "../../../../assets/img/pm2_5.png";
@@ -45,7 +46,6 @@ const Setting = (props) => {
         )
     }
 
-    console.log(node, userNode);
     const Sensor = (props) => {
         const {max, min, img, title,item} = props;
         
@@ -101,8 +101,10 @@ const Setting = (props) => {
         navigate("/type", {state : {nodes,id}});
     }
 
+
+    //노드 타입을 추가 및 변경
     const changeNodeType = () => {
-        axios.post('/updateNodeType',{nodeType,userId, nodeId}).then((res) => console.log(res));
+        axios.post('/updateNodeType',{nodeType,userId, nodeId});
         const id = userId;
         navigate("/type", {state : {nodes, id}});
     }
@@ -127,8 +129,8 @@ const Setting = (props) => {
                                 <Sensor max={userNode.MAXH} min={userNode.MINH} img={HUMImg} title="습도" item="H"></Sensor>
                                 <Sensor max={userNode.MAXCO2} min={userNode.MINCO2} img={co2Img} title="이산화탄소" item="CO2"></Sensor>
                                 <Sensor max={userNode.MAXEC} min={userNode.MINEC} img={ECImg} title="전기전도도"  item="EC"></Sensor>
-                                <Sensor max={userNode.MAXSH} min={userNode.MINSH} img={soilImg} title="소일흄"  item="SH"></Sensor>
-                                <Sensor max={userNode.MAXST} min={userNode.MINST} img={soilImg} title="소일템"  item="ST"></Sensor>
+                                <Sensor max={userNode.MAXST} min={userNode.MINST} img={soilTImg} title="토양온도"  item="ST"></Sensor>
+                                <Sensor max={userNode.MAXSH} min={userNode.MINSH} img={soilHImg} title="토양습도"  item="SH"></Sensor>
                             </>
                         ) : node && node.node_type.split('"')[3].slice(3,6) === "323" ? (
                             <>
@@ -151,7 +153,7 @@ const Setting = (props) => {
                                 <Sensor max={userNode.MAXCH4} min={userNode.MINCH4} img={METHANEImg} title="메테인" item="CH4"></Sensor>
                                 <Sensor max={userNode.MAXPM1} min={userNode.MINPM1} img={pm1Img} title="PM1" item="PM1"></Sensor>
                                 <Sensor max={userNode.MAXPM10} min={userNode.MINPM10} img={pm10Img} title="PM10"item="PM10"></Sensor>
-                                <Sensor max={userNode.MAXPM2_5} min={userNode.MINPM2_5} img={pm25Img} title="PM2.5" item="PM2_5"></Sensor>
+                                <Sensor max={userNode.MAXPM25} min={userNode.MINPM25} img={pm25Img} title="PM2.5" item="PM25"></Sensor>
                             </>
                         ): spinLoading()}
                     </div>

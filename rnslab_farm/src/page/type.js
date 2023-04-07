@@ -79,7 +79,8 @@ const Type = () => {
             }
         });
     }
-
+    
+    //노드들 데이터 가져오기
     const getNodes = async() => {
         setNodesLoading(true);
         try {

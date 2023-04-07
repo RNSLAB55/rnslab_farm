@@ -33,10 +33,6 @@ const Main = () => {
         setMenu(menuNo);
     }
 
-    
-    // const i = SensorWithRange(node);
-    
-
     return (
         <div className="main">
             <div className="header">

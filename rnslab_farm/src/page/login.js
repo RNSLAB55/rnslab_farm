@@ -11,6 +11,7 @@ const Login = () => {
     const [users, setUsers] = useState([]);
     const [usersLoading, setUsersLoading] = useState(false);
 
+    //유져들의 데이터를 가져옴
     const getUsers = async() => {
         setUsersLoading(true);
         try {
@@ -22,7 +23,7 @@ const Login = () => {
         }
     }
 
-
+    //로그인 후 type으로 이동
     const goType = () => {
         let check = false;
         users && users.map((user) => {
@@ -39,6 +40,7 @@ const Login = () => {
         }
     }
 
+    //Loading일때
     const spinLoading = () => {
         return (
             <div style={{textAlign: 'center'}}>
