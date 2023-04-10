@@ -65,7 +65,7 @@ const Type = () => {
         nodes && nodes.map(async (node) => {
             setInputIdLoading(true);
             try {
-                if(node.node_id === inputId) {
+                if(node.node_id === inputId && node.node_desc === id) {
                     const nodeId = node.node_id;
                     await axios.post("/addNode",{id, nodeId});
                     setInputIdLoading(false);
