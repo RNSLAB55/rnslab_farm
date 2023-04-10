@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import moment from "moment";
 
-import InputDataNodes from "../api/inputDataNodes";
-
 const Type = () => {
     const navigate = useNavigate();
     const id = useLocation().state;
@@ -20,7 +18,7 @@ const Type = () => {
     const [inputIdLoading, setInputIdLoading] = useState(false);
     
     //DB에 유저의 기기 노드들 추가
-    const {inputDataLoading} = InputDataNodes(nodes, id);
+    const [inputDataLoading, setInputDataLoading] = useState(false);
 
     const [nodesLoading, setNodesLoading] = useState(false);
     const url = "https://iotown.rnslab.com/api/v1.0/nodes";
@@ -79,6 +77,21 @@ const Type = () => {
             }
         });
     }
+
+    const inputDataNodes = () => {
+        nodes && nodes.map(async (node) => {
+            if(node.node_desc === id) {
+                setInputDataLoading(true);
+                try{
+                    const nodeId = node.node_id;
+                    await axios.post("/addNode",{id,nodeId});
+                    setInputDataLoading(false);
+                }catch(err){
+                    console.log(err);
+                }
+            }
+        });
+    }
     
     //노드들 데이터 가져오기
     const getNodes = async() => {
@@ -94,9 +107,13 @@ const Type = () => {
 
     //처음에 유저노드들 가져오기
     useEffect(() => {
-        render();
         getNodes();
-    },[inputDataLoading, inputIdLoading]);
+    },[inputIdLoading]);
+
+    useEffect(() => {
+        inputDataNodes();
+        render();
+    },[nodes]);
 
 
     return (
