@@ -124,7 +124,7 @@ app.post('/addNode', (req, res) => {
     const id = req.body.id;
     const nodeId = req.body.nodeId;
     getConnection((connection) => {
-        connection.query("INSERT INTO nodes (node_Id, id,MAXT,MAXH,MAXCO,MAXMETHAN,MAXH2S,MAXNOX,MAXCO2,MAXEC,MAXEH,MAXSH,MAXST,MAXAQS,MAXCH4,MAXPM1,MAXPM10,MINT,MINH,MINCO,MINMETHAN,MINH2S,MINNOX,MINCO2,MINEC,MINEH,MINSH,MINST,MINAQS,MINCH4,MINPM1,MINPM10,MAXPM2_5,MINPM2_5) SELECT ?,?,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 FROM dual where not exists (SELECT node_Id, id from nodes WHERE node_Id =? and id =?);",[nodeId,id,nodeId,id],
+        connection.query("INSERT INTO nodes (node_Id, id,MAXT,MAXH,MAXCO,MAXMETHAN,MAXH2S,MAXNOX,MAXCO2,MAXEC,MAXEH,MAXSH,MAXST,MAXAQS,MAXCH4,MAXPM1,MAXPM10,MINT,MINH,MINCO,MINMETHAN,MINH2S,MINNOX,MINCO2,MINEC,MINEH,MINSH,MINST,MINAQS,MINCH4,MINPM1,MINPM10,MAXPM25,MINPM25) SELECT ?,?,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 FROM dual where not exists (SELECT node_Id, id from nodes WHERE node_Id =? and id =?);",[nodeId,id,nodeId,id],
         function(err, rows) {
             if(err) {
                 console.log(err);
