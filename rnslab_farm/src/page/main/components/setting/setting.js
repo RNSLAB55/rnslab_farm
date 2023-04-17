@@ -104,9 +104,11 @@ const Setting = (props) => {
 
     //노드 타입을 추가 및 변경
     const changeNodeType = () => {
-        axios.post('/updateNodeType',{nodeType,userId, nodeId});
-        const id = userId;
-        navigate("/type", {state : id});
+        if(nodeType !== ""){
+            axios.post('/updateNodeType',{nodeType,userId, nodeId});
+            const id = userId;
+            navigate("/type", {state : id});
+        }
     }
 
     return (
