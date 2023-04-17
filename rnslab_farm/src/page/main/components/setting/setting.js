@@ -98,7 +98,7 @@ const Setting = (props) => {
             UpdateSetting(eventArray,nodeId,userId);
         }
         const id = userId;
-        navigate("/type", {state : {nodes,id}});
+        navigate("/type", {state : id});
     }
 
 
@@ -106,7 +106,7 @@ const Setting = (props) => {
     const changeNodeType = () => {
         axios.post('/updateNodeType',{nodeType,userId, nodeId});
         const id = userId;
-        navigate("/type", {state : {nodes, id}});
+        navigate("/type", {state : id});
     }
 
     return (
