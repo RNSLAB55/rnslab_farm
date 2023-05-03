@@ -6,55 +6,27 @@ import moment from "moment";
 
 import leftIcon from "../../../../../assets/img/left.png";
 import { unit } from "../../../../../common";
+import NameByItem from "../../../../../NameByItem";
 
 import {meanBy,maxBy,map,minBy} from "lodash";
-
-const nameByItem = (item) => {
-    let name = "";
-    switch (item) {
-      case "T":
-        name = "온도";
-        break;
-      case "H":
-        name = "습도";
-        break;
-      case "co":
-        name = "일산화탄소";
-        break;
-      case "METHAN":
-        name = "메탄가스";
-        break;
-      case "H2S":
-        name = "황화수소가스";
-        break;
-      case "NOx":
-        name = "질소화합물가스";
-        break;
-      default:
-        name = "";
-        break;
-    }
-  
-    return name;
-};
 
 const EachSensor = () => {
     const {node,sensorLastTime} = useLocation().state;
     const {item} = useParams();
+    const nameByItem = NameByItem(item);
     const {rangeData, rangeLoading} = GetStorage({node,sensorLastTime});
     const [xRange, setXRange] = useState([]);
     const [yRange, setYRange] = useState([]);
     const [options, setOptions] = useState({});
 
     const parse = (str) => {
-        let y = str.substr(0,4);
-        let m = str.substr(5,2);
-        let d = str.substr(8,2);
+        // let y = str.substr(0,4);
+        // let m = str.substr(5,2);
+        // let d = str.substr(8,2);
         let h = (Number(str.substr(11,2))+9)%24;
         let min = str.substr(14,2);
         let s = str.substr(17,2);
-    
-        // return `${y}-${(m-1)}-${d} ${h}:${min}:${s}`;
+
         return `${h}:${min}:${s}`;
     }
 
@@ -106,33 +78,6 @@ const EachSensor = () => {
                         color : '#22AF4F'
                     }
                 }]
-                // visualMap : [
-                //     {
-                //         show: false,
-                //         type : 'continuous',
-                //         seriesIndex : 0,
-                //         min : 0,
-                //         max: 800,
-                //         color:"#22AF4F"
-                //     },
-                // ],
-                // yAxis: [
-                //     {}
-                // ],
-                // series : [
-                //     {
-                //         data : xRange,
-                //         type: 'line',
-                //         showSymbol: false,
-                //         smooth: true,
-                //         itemStyle:{ //차트의 색상 변경
-                //             color:"#22AF4F"
-                //         }
-                //     }
-                // ],
-                // tooltip: {
-                //     trigger: "axis",
-                // },
             })
         }
     },[xRange, yRange]);
@@ -146,7 +91,7 @@ const EachSensor = () => {
                         <button onClick={() => {window.history.back();}}> 
                             <img src={leftIcon} alt=""/> 
                         </button>
-                        <div className="title">{nameByItem(item)}</div>
+                        <div className="title">{nameByItem}</div>
                         <div className="temp"></div>
                     </div>
                     <div className="body">
@@ -169,7 +114,7 @@ const EachSensor = () => {
                                 <div className="chart">
                                     <div className="titleArea">
                                         <div className="title">
-                                         {node.node_type.split('"')[3].slice(0,6)} {nameByItem(item)}({unit(item)})
+                                         {node.node_type.split('"')[3].slice(0,6)} {nameByItem}({unit(item)})
                                         </div>
                                     </div>
                                     <div className="chartArea">
@@ -204,7 +149,7 @@ const EachSensor = () => {
                                 </div>
                                 <div className="minmax">
                                     <div className="value">
-                                        <div>{nameByItem(item)}최대</div>
+                                        <div>{nameByItem}최대</div>
                                         <div>
                                             <div className="range"></div>
                                             {xRange.length>0 && maxBy(map(xRange))}
@@ -212,7 +157,7 @@ const EachSensor = () => {
                                         </div>
                                     </div>
                                     <div className="value">
-                                        <div>{nameByItem(item)}최소</div>
+                                        <div>{nameByItem}최소</div>
                                         <div>
                                             <div className="range"></div>
                                             {xRange.length>0 && minBy(map(xRange))}
