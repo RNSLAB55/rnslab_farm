@@ -6,8 +6,7 @@ import moment from "moment";
 
 const Type = () => {
     const navigate = useNavigate();
-    const id = useLocation().state;
-    const [nodes, setNodes] = useState([]);
+    const {id,nodes} = useLocation().state;
 
     //id와 맞는 node들을 가지는 변수
     const [userNodes, setUserNodes] = useState();
@@ -19,9 +18,6 @@ const Type = () => {
     
     //DB에 유저의 기기 노드들 추가
     const [inputDataLoading, setInputDataLoading] = useState(false);
-
-    const [nodesLoading, setNodesLoading] = useState(false);
-    const url = "https://iotown.rnslab.com/api/v1.0/nodes";
 
     //로딩중
     const spinLoading = () => {
@@ -92,23 +88,6 @@ const Type = () => {
             }
         });
     }
-    
-    //노드들 데이터 가져오기
-    const getNodes = async() => {
-        setNodesLoading(true);
-        try {
-            const response = await axios.post('/getNodes', {url});
-            setNodes(response.data.nodes);
-            setNodesLoading(false);
-        }catch (err) {
-            console.log("Error >>",err);
-        }
-    }
-
-    //처음에 유저노드들 가져오기
-    useEffect(() => {
-        getNodes();
-    },[inputIdLoading]);
 
     useEffect(() => {
         inputDataNodes();
@@ -118,7 +97,7 @@ const Type = () => {
 
     return (
         <>
-            {nodes === null || userNodesLoading || inputDataLoading || inputIdLoading || nodesLoading ? spinLoading() : (
+            {!nodes && userNodesLoading && inputDataLoading && inputIdLoading ? spinLoading() : (
                 <div className="type">
                     <div className="header">프로필 선택</div>
                     <div className="body">

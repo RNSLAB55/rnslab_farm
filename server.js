@@ -24,23 +24,6 @@ const setOptions = (url) => {
     return options;
 }
 
-const storageSetOptions = (nodeId, url, range) => {
-    const options = {
-        uri : url,
-        headers: {
-            Token:
-              process.env.TOKEN,
-        },
-        params: {
-            nid: `${nodeId}`,
-            from: range[0].toString(),
-            to: range[1].toString()
-        },
-        "rejectUnauthorized": false,
-    }
-    return options;
-}
-
 app.get('/', function (요청, 응답) {
     응답.sendFile(path.join(__dirname, '/rnslab_farm/build/index.html'));
 });
@@ -68,24 +51,32 @@ app.post('/getNodes', (req, res) => {
             jsonData = JSON.parse(JSON.stringify(rows.body, null, 2));
             res.send(jsonData);
         }
-    })
+    });
 });
 
-app.post('/getStorage', (req, res) => {
-    const nodeId = req.body.nodeId;
-    const range = req.body.range;
+app.post('/getNode', (req, res) => {
     const url = req.body.url;
-    console.log(nodeId, range, url);
-    request(storageSetOptions(nodeId, url, range), function(err, rows) {
-        if(err){
+    console.log(url);
+    request(setOptions(url), function(err, rows) {
+        if(err) {
             console.log(err);
         }else {
-            console.log(rows.body);
-            jsonData = JSON.parse(JSON.stringify(rows.body, null, 2));
+            jsonData = JSON.parse(JSON.stringify(rows.body, null));
             res.send(jsonData);
         }
     });
-    res.setHeader('Connection', 'close');
+});
+
+app.post('/getStorage', (req, res) => {
+    const url = req.body.url;
+    request(setOptions(url), function(err, rows) {
+        if(err) {
+            console.log(err);
+        }else {
+            jsonData = JSON.parse(JSON.stringify(rows.body, null));
+            res.send(jsonData);
+        }
+    });
 });
 
 app.post('/updateNodeType', (req, res) => {

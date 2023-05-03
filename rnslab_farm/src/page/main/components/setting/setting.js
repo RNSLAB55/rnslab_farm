@@ -145,7 +145,7 @@ const Setting = (props) => {
                             <>
                                 <Sensor max={userNode.MAXAQS} min={userNode.MINAQS} img={aqsImg} title="유해가스" item="AQS"></Sensor>
                             </>
-                        ) : node && node.node_type.split('"')[3].slice(3,6) === "334" ? (
+                        ) : node && node.node_type.split('"')[3].slice(3,6) === "331" ? (
                             <>
                                 <Sensor max={userNode.MAXT} min={userNode.MINT} img={TEMPImg} title="온도"  item="T"></Sensor>
                                 <Sensor max={userNode.MAXH} min={userNode.MINH} img={HUMImg} title="습도"  item="H"></Sensor>

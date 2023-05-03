@@ -1,6 +1,9 @@
-import { SpinLoading } from "antd-mobile";
+import { SpinLoading, Toast } from "antd-mobile";
 import moment from "moment";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import GetApiNode from "../../../../api/getApiNode";
 
 import METHANEImg from "../../../../assets/img/methane.png";
 import NOxImg from "../../../../assets/img/bus.png";
@@ -18,14 +21,14 @@ import pm1Img from "../../../../assets/img/pm1.png";
 import pm10Img from "../../../../assets/img/pm10.png";
 import pm25Img from "../../../../assets/img/pm2_5.png";
 import aqsImg from "../../../../assets/img/aqs.png"
-
 import { unit } from "../../../../common";
 
 const EverySensor = (props) => {
+    const navigate = useNavigate();
     const {node, userNode}  = props.init;
-    const sensorValue = node.last_data;
+    const nodeID = node.node_id;
+    const {sensorValue, sensorLastTime, sensorValueLoading} = GetApiNode(nodeID);
     const [clicked, setCliked] = useState(false);
-
 
     //Loading일때
     const spinLoading = () => {
@@ -46,8 +49,7 @@ const EverySensor = (props) => {
 
 
     //센서 컴포너트
-    const Sensor = (props) => {
-        const {max, min, img, title, value, item} = props;
+    const Sensor = ({max, min, img, title, value, item}) => {
 
         const isSetting = () => {
             return ( (max === 0 && min === 0) || max === undefined);
@@ -57,7 +59,7 @@ const EverySensor = (props) => {
             return (
                 !isSetting() && (value > max || value < min)
             )
-        }
+        } 
 
         const setFontColor = () => {
             let color = "#22AF4F";
@@ -83,8 +85,12 @@ const EverySensor = (props) => {
             return id;
         }
 
+        const SensorClicked = () => {
+            value ? navigate(`/eachSensor/${item}`,{state: {node,sensorLastTime}}) : Toast.show({content: "데이터가 없습니다.", position:"bottom"});
+        }
+
         return (
-            <div className="item" id={setId()}>
+            <div className="item" id={setId()} onClick={SensorClicked}>
                 <div className="imgArea">
                     <img src={img} alt=""></img>
                 </div>
@@ -125,8 +131,8 @@ const EverySensor = (props) => {
                     </div>
                 </div>
                 <div className="valueArea">
-                        <span style={{fontSize: "24px", color: "#22AF4F", marginTop: value ? "" : "-10px"}}></span>
-                        <span style={{marginTop:"10px", paddingLeft: "4px"}}>{value}</span>
+                        <span style={{fontSize: "24px", color: "#22AF4F", marginTop: value ? "" : "-10px"}}>{value ?value : "1"}</span>
+                        <span style={{marginTop:"10px", paddingLeft: "4px"}}></span>
                 </div>
             </div>
         )
@@ -144,7 +150,7 @@ const EverySensor = (props) => {
                     최근 업데이트 시각
                     <br/> {moment(node.last_timestamp).format("YYYY-MM-DD HH:mm:ss")}
                 </div>
-                {!node ? (
+                {!node || sensorValueLoading ? (
                     spinLoading()
                 ) : node.node_type.split('"')[3].slice(3,6) === "322" ? ( //노드 type이 322일때
                     <>
@@ -188,7 +194,23 @@ const EverySensor = (props) => {
                     <>
                         <Sensor max={userNode.MAXAQS} min={userNode.MINAQS} img={TEMPImg} title="유해가스" value={sensorValue && sensorValue.AQS} item="AQS"></Sensor>
                     </>
-                ) : node.node_type.split('"')[3].slice(3,6) === "334" ? ( //노드 type이 334일때 
+                ) : node.node_type.split('"')[3].slice(3,6) === "335" ? ( //노드 type이 335일때 
+                    <>
+                        <Sensor max={userNode.MAXT} min={userNode.MINT} img={TEMPImg} title="온도" value={sensorValue && sensorValue.T} item="T"></Sensor>
+                        <Sensor max={userNode.MAXH} min={userNode.MINH} img={HUMImg} title="습도" value={sensorValue && sensorValue.H} item="H"></Sensor>
+                        <Sensor max={userNode.MAXCO2} min={userNode.MINCO2} img={co2Img} title="이산화탄소" value={sensorValue && sensorValue.Co2} item="Co2"></Sensor>
+                        <Sensor max={userNode.MAXNOX} min={userNode.MINNOX} img={NOxImg} title="질소화합물가스" value={sensorValue && sensorValue.NOX} item="NOX"></Sensor>
+                        <Sensor max={userNode.MAXAQS} min={userNode.MINAQS} img={aqsImg} title="유해가스" value={sensorValue && sensorValue.AQS} item="AQS"></Sensor>
+                        <Sensor max={userNode.MAXCH4} min={userNode.MINCH4} img={METHANEImg} title="메테인" value={sensorValue && sensorValue.CH4} item="CH4"></Sensor>
+                        <Sensor max={userNode.MAXPM1} min={userNode.MINPM1} img={pm1Img} title="PM1" value={sensorValue && sensorValue.PM1} item="PM1"></Sensor>
+                        <Sensor max={userNode.MAXPM10} min={userNode.MINPM10} img={pm10Img} title="PM10" value={sensorValue && sensorValue.PM10} item="PM10"></Sensor>
+                        <Sensor max={userNode.MAXPM25} min={userNode.MINPM25} img={pm25Img} title="PM2.5" value={sensorValue && sensorValue.PM25} item="PM25"></Sensor>
+                        {clicked ? <NoSensor img={VImg} title="버전" value={sensorValue && sensorValue.V}></NoSensor> : null}
+                        <div className="ReadMore">
+                            <button onClick={checkClick}>{clicked ? "버전 숨기기" : "자세히 보기" }</button>
+                        </div>
+                    </>
+                ) : node.node_type.split('"')[3].slice(3,6) === "331" ? ( //노드 type이 331일때 
                     <>
                         <Sensor max={userNode.MAXT} min={userNode.MINT} img={TEMPImg} title="온도" value={sensorValue && sensorValue.T} item="T"></Sensor>
                         <Sensor max={userNode.MAXH} min={userNode.MINH} img={HUMImg} title="습도" value={sensorValue && sensorValue.H} item="H"></Sensor>

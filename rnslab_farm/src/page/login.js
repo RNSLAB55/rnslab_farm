@@ -2,7 +2,10 @@ import axios from "axios";
 import { useState,useEffect } from "react";
 import { Toast,SpinLoading } from "antd-mobile";
 import { useNavigate } from "react-router-dom";
+
 import logo from "../assets/img/logo.png";
+
+import GetNodes from "../api/getNodes";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -10,6 +13,7 @@ const Login = () => {
     const [pw, setPw] = useState("");
     const [users, setUsers] = useState([]);
     const [usersLoading, setUsersLoading] = useState(false);
+    const {nodes, nodesLoading} = GetNodes(); //노드들 가져오기
 
     //유져들의 데이터를 가져옴
     const getUsers = async() => {
@@ -29,7 +33,7 @@ const Login = () => {
         users && users.map((user) => {
             if(id === user.setting_Id && pw === user.setting_Pw){
                 check = true;
-                navigate("/type", {state : id});
+                navigate("/type", {state : {id,nodes}});
             }
         })
         if(check === false){
@@ -63,7 +67,7 @@ const Login = () => {
 
     return (
         <div className="login">
-            {usersLoading ?  spinLoading() : 
+            {usersLoading&&nodesLoading ?  spinLoading() : 
                 <>
                     <div> <img src={logo} alt=""></img></div>
                     <div className="title">로그인</div>
