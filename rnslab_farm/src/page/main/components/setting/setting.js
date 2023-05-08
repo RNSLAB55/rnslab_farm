@@ -91,14 +91,19 @@ const Setting = (props) => {
                 eventArray.push( event.target[i]);
             }
             UpdateSetting(eventArray,nodeId,userId);
-        }else if(node && node.node_type.split('"')[3].slice(3,6) === "334"){
+        }else if(node && node.node_type.split('"')[3].slice(3,6) === "335"){
+            for(let i=0; i<18; i++){
+                eventArray.push( event.target[i]);
+            }
+            UpdateSetting(eventArray,nodeId,userId);
+        }else if(node && node.node_type.split('"')[3].slice(3,6) === "331"){
             for(let i=0; i<18; i++){
                 eventArray.push( event.target[i]);
             }
             UpdateSetting(eventArray,nodeId,userId);
         }
         const id = userId;
-        navigate("/type", {state : id});
+        navigate("/type", {state : {id,nodes}});
     }
 
 
@@ -107,7 +112,7 @@ const Setting = (props) => {
         if(nodeType !== ""){
             axios.post('/updateNodeType',{nodeType,userId, nodeId});
             const id = userId;
-            navigate("/type", {state : id});
+            navigate("/type", {state : {id,nodes}});
         }
     }
 

@@ -12,7 +12,6 @@ const GetStorage = (props) => {
     const url = `https://iotown.rnslab.com/api/v1.0/storage/?nid=${nodeId}&from=${lastWeek}&to=${current}`
     const [rangeData, setRangeData] = useState([]);
     const [rangeLoading, setRangeLoading] = useState(false);
-    console.log(time,current)
 
     const getStorage = async() => {
         setRangeLoading(true);

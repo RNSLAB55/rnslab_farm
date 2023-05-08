@@ -36,7 +36,6 @@ const EachSensor = () => {
            setYRange(rangeData.map((v) => parse(v.timestamp)).reverse());
         }
     },[rangeData]);
-    console.log(rangeData);
 
     useEffect(() => {
         if(xRange && yRange){
