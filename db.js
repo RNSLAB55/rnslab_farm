@@ -3,7 +3,7 @@ const config = require("./db _config.json");
 
 const {development, production} = config;
 
-let pool = mysql.createPool(development);
+let pool = mysql.createPool(production);
 
 function getConnection(callback) {
     pool.getConnection(function(err,conn) {

@@ -21,6 +21,12 @@ export const unit = (item) => {
         break;
       case "CO2":
         unit = "ppm";
+      case "EC":
+        unit = "uS/cm";
+      case "ST":
+        unit = "°C";
+      case "SH":
+        unit = "%";
       default:
         unit = "ppm";
         break;
